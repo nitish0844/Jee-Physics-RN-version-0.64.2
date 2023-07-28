@@ -29,7 +29,7 @@
     "appcenter-analytics": "4.4.5",
     "appcenter-cli": "^2.13.9",
     "appcenter-crashes": "4.4.5",
-    "lottie-react-native": "5.1.4",
+    "lottie-react-native": "5.1.3",
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-alert-notification": "^0.3.4",

@@ -439,7 +439,7 @@ const App = () => {
 
     // Simulate fetching data from the internet
     setTimeout(() => {
-      setLoading(false); // Once data is fetched, set loading to false
+      setLoading(!loading); // Once data is fetched, set loading to false
     }, 5000); // Adjust the delay as needed
 
     return () => {
