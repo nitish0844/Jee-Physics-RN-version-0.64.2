@@ -10,7 +10,7 @@ import {
 import React, {useState, useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import codePush from 'react-native-code-push';
+// import codePush from 'react-native-code-push';
 
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -226,7 +226,8 @@ const ProfileImage = () => {
   );
 };
 
-export default codePush(ProfileImage);
+export default ProfileImage;
+// export default codePush(ProfileImage);
 
 const styles = StyleSheet.create({
   image: {
