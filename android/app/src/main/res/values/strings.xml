@@ -3,4 +3,5 @@
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
     <string moduleConfig="true" name="CodePushDeploymentKey">L85qKqAp6JSCKva_LyK5ufSwAz0obivLQRPLT</string>
+    <string name="default_notification_channel_id">812019205023-9994365901</string>
 </resources>

@@ -18,6 +18,8 @@ import {
 import NetInfo from '@react-native-community/netinfo';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
+
 // import {
 //   GoogleSignin,
 //   statusCodes,
@@ -164,6 +166,7 @@ const Signup = () => {
       if (user) {
         await user.reload();
         if (user.emailVerified && !hasNavigatedRef.current) {
+          let token = await messaging().getToken();
           hasNavigatedRef.current = true;
           showVerificationSuccessfulDialog();
 
@@ -172,6 +175,12 @@ const Signup = () => {
             name: name, // Include the 'name' variable here
             email: user.email,
           });
+
+          await firestore()
+            .collection('UserFcmToken')
+            .doc(user.email)
+            .set({FcmToken: token});
+
           console.log('Data Saved');
 
           unsubscribeOnUserChanged(); // Unsubscribe the event listener after navigating
@@ -181,20 +190,6 @@ const Signup = () => {
 
     return () => unsubscribeOnUserChanged(); // Unsubscribe on component unmount
   }, [name]);
-
-  // useEffect(() => {
-  //   const unsubscribe = auth().onAuthStateChanged(user => {
-  //     if (user && !hasNavigatedRef.current) {
-  //       // User is authenticated
-  //       hasNavigatedRef.current = true;
-  //       navigation.replace('BottomTabs');
-  //     }
-  //   });
-
-  //   return () => {
-  //     unsubscribe(); // Cleanup the listener when the component unmounts
-  //   };
-  // }, []);
 
   const emailSignin = async () => {
     auth()
@@ -253,26 +248,26 @@ const Signup = () => {
   // Code for rendering of BottomTabs after the user is verified
   // Store the Data in the firestore for EmailAuth people
 
-  useEffect(() => {
-    const unsubscribeOnUserChanged = auth().onUserChanged(async user => {
-      if (user) {
-        await user.reload();
-        if (user.emailVerified && !hasNavigatedRef.current) {
-          hasNavigatedRef.current = true;
-          showVerificationSuccessfulDialog();
-          await firestore().collection('emailAuth').doc(user.email).set({
-            uid: user.uid,
-            name: name, // Include the 'name' variable here
-            email: user.email,
-          });
-          console.log('Data Saved');
-          unsubscribeOnUserChanged(); // Unsubscribe the event listener after navigating
-        }
-      }
-    });
+  // useEffect(() => {
+  //   const unsubscribeOnUserChanged = auth().onUserChanged(async user => {
+  //     if (user) {
+  //       await user.reload();
+  //       if (user.emailVerified && !hasNavigatedRef.current) {
+  //         hasNavigatedRef.current = true;
+  //         showVerificationSuccessfulDialog();
+  //         await firestore().collection('emailAuth').doc(user.email).set({
+  //           uid: user.uid,
+  //           name: name, // Include the 'name' variable here
+  //           email: user.email,
+  //         });
+  //         console.log('Data Saved');
+  //         unsubscribeOnUserChanged(); // Unsubscribe the event listener after navigating
+  //       }
+  //     }
+  //   });
 
-    return () => unsubscribeOnUserChanged(); // Unsubscribe on component unmount
-  }, [name]); // Include 'name' as a dependency in the useEffect dependency array
+  //   return () => unsubscribeOnUserChanged(); // Unsubscribe on component unmount
+  // }, [name]); // Include 'name' as a dependency in the useEffect dependency array
 
   console.log(name);
 

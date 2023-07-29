@@ -7,9 +7,8 @@ import Feather from 'react-native-vector-icons/Feather.js';
 import NetInfo from '@react-native-community/netinfo';
 // import dynamicLinks from '@react-native-firebase/dynamic-links';
 import NoInternet from './source/screens/NoInternet.js';
-import {ActivityIndicator, View} from 'react-native';
 
-// import messaging from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import {Platform} from 'react-native';
 
 import Slide from './source/screens/Slider/Slide.js';
@@ -33,158 +32,6 @@ import Loader from './source/components/Loader/Loader.js';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// const RootNavigator = () => {
-//   const HomeStack = () => {
-//     return (
-//       <Stack.Navigator
-//         initialRouteName="Sliding"
-//         screenOptions={{headerShown: false}}>
-//         <Stack.Screen
-//           name="Sliding"
-//           component={Slider}
-//           options={{headerShown: false}}
-//         />
-//         <Stack.Screen
-//           name="Signup"
-//           component={Signup}
-//           options={{headerShown: false}}
-//         />
-//         <Stack.Screen
-//           name="NewPassword"
-//           component={NewPassword}
-//           options={{headerShown: false}}
-//         />
-//         <Stack.Screen
-//           name="ForgetPassword"
-//           component={ForgetPassword}
-//           options={{headerShown: false}}
-//         />
-//         <Stack.Screen
-//           name="Login"
-//           component={LoginScreen}
-//           options={{headerShown: false}}
-//         />
-//         <Stack.Screen
-//           name="SearchPage"
-//           component={SearchPage}
-//           options={{headerShown: false}}
-//         />
-//         <Stack.Screen
-//           name="MainPage"
-//           component={MainPage}
-//           options={{headerShown: false}}
-//         />
-//       </Stack.Navigator>
-//     );
-//   };
-
-//   const BottomTabs = () => {
-//     return (
-//       // <NavigationContainer>
-//       <Tab.Navigator
-//         screenOptions={({route}) => ({
-//           // tabBarStyle: { backgroundColor: "red" },
-//           tabBarActiveTintColor: 'tomato',
-//           tabBarInactiveTintColor: 'gray',
-//           tabBarIcon: ({focused, size, colour}) => {
-//             let iconName;
-//             if (route.name === 'MainPage') {
-//               iconName = focused ? 'home-variant' : 'home-variant-outline';
-//             } else if (route.name === 'SearchPage') {
-//               iconName = focused ? 'earth' : 'google-earth';
-//             } else if (route.name === 'Isslocation') {
-//               iconName = focused ? 'satellite-uplink' : 'satellite-variant';
-//             } else if (route.name === 'DataSol') {
-//               iconName = focused ? 'robot' : 'robot-outline';
-//             }
-
-//             // let iconName;
-//             // if (route.name === "Home") {
-//             //   iconName = focused ? "home-variant" : "home-variant-outline";
-//             // } else if (route.name === "Planetsapi") {
-//             //   iconName = focused ? "earth" : "google-earth";
-//             // } else if (route.name === "DataSol") {
-//             //   iconName = focused ? "robot" : "robot-outline";
-//             // }
-//             return (
-//               // <View style={{ backgroundColor: focused ? "red" : "blue" }}>
-//               <MaterialCommunityIcons
-//                 name={iconName}
-//                 size={size}
-//                 // colour={focused ? "red" : "blue"}
-//               />
-//               // </View>
-//             );
-//           },
-//         })}>
-//         <Tab.Screen
-//           options={{
-//             header: () => null,
-//             tabBarLabel: () => {
-//               return null;
-//             },
-//           }}
-//           name="MainPage"
-//           // component={HomeScreen}
-//           component={MainPage}
-//         />
-//         <Tab.Screen
-//           options={{
-//             header: () => null,
-//             tabBarLabel: () => {
-//               return null;
-//             },
-//           }}
-//           name="SearchPage"
-//           component={SearchPage}
-//         />
-//         {/* <Tab.Screen
-//           options={{
-//             header: () => null,
-//             tabBarLabel: () => {
-//               return null;
-//             },
-//           }}
-//           name="Isslocation"
-//           component={IssLocation}
-//         /> */}
-//         {/* <Tab.Screen
-//           options={{
-//             header: () => null,
-//             tabBarLabel: () => {
-//               return null;
-//             },
-//           }}
-//           name="DataSol"
-//           component={DataSol}
-//         /> */}
-//       </Tab.Navigator>
-//     );
-//   };
-
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator>
-//         <Stack.Screen
-//           name="HomeStack"
-//           component={HomeStack}
-//           options={{headerShown: false}}
-//         />
-//         {/* <Stack.Screen
-//           name="MainPage"
-//           component={MainPage}
-//           options={{headerShown: false}}
-//         /> */}
-//         <Stack.Screen
-//           name="BottomTabs"
-//           component={BottomTabs}
-//           options={{headerShown: false}}
-//         />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-
 const RootNavigator = () => {
   const navigation = useNavigation(); // Add this line to get the navigation object
 
@@ -203,104 +50,78 @@ const RootNavigator = () => {
   //   getDeviceToken();
   // }, []);
 
-  // useEffect(() => {
-  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
-  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-  //   });
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      const {title, body} = remoteMessage.notification;
+      PushNotification.localNotification({
+        title: title,
+        message: body,
+        channelId: '812019205023-9994365901', // Make sure this matches the channelId you defined in PushNotification.configure()
+        category: '812019205023-9994365901',
+      });
+    });
 
-  //   return unsubscribe;
-  // }, []);
+    return unsubscribe;
+  }, []);
 
   // const getDeviceToken = async () => {
-  //   let token = await messaging().getToken();
-  //   console.log(token);
-  // };
-
-  // const requestUserPermission = async () => {
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-  //   if (enabled) {
-  //     console.log('Authorization status:', authStatus);
+  //   try {
+  //     let token = await messaging().getToken();
+  //     const currentUser = auth().currentUser;
+  //     console.log('Fcm Token', token);
+  //     await firestore()
+  //       .collection('UserFcmToken')
+  //       .doc(currentUser.email)
+  //       .set({FcmToken: token});
+  //   } catch (error) {
+  //     console.error('Error getting FCM token:', error);
   //   }
   // };
 
-  // useEffect(() => {
-  //   if (requestUserPermission()) {
-  //     messaging()
-  //       .getToken()
-  //       .then(fcmToken => {
-  //         console.log('Fcm Token', fcmToken);
-  //       });
-  //   }
-  // }, []);
+  const requestUserPermission = async () => {
+    try {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  // useEffect(() => {
-  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
-  //     // Handle the incoming message here and display the notification
-  //     const {title, body} = remoteMessage.notification;
-  //     // Use a notification library or custom code to display the notification
-  //     // For example, you can use react-native-push-notification or react-native-notifications
-  //     // to display the notification.
-  //     // Example using react-native-push-notification:
-  //     PushNotification.localNotification({
-  //       title: title,
-  //       message: body,
-  //     });
-  //   });
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+      }
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+    }
+  };
 
-  //   return unsubscribe;
-  // }, []);
+  useEffect(() => {
+    requestUserPermission();
+  }, []);
 
-  // PushNotification.configure({
-  //   // Other configuration options...
+  PushNotification.configure({
+    // Called when the token is generated or registered
+    onRegister: function (token) {
+      console.log('Registered with token:', token.token);
+    },
+    // Called when a remote or local notification is opened or received
+    onNotification: function (notification) {
+      console.log('Received notification:', notification);
+      // You can handle the received notification here
+    },
 
-  //   // Create a notification channel for Android
-  //   onRegister: function (token) {
-  //     if (Platform.OS === 'android') {
-  //       PushNotification.createChannel(
-  //         {
-  //           channelId: '812019205023-9994365901', // Provide a unique channel id
-  //           channelName: 'Jee Physics App', // Specify the channel name
-  //           channelDescription: 'Hii Students', // Provide a channel description
-  //           soundName: 'default', // Specify the default sound for notifications
-  //           importance: 4, // Set the importance level (1: Default, 4: High)
-  //           vibrate: true, // Enable vibration for notifications
-  //         },
-  //         created => console.log(`Channel created: ${created}`),
-  //       );
-  //     }
-  //   },
-
-  //   // Other event handlers...
-  // });
-
-  // Configure the notification library
-  // PushNotification.configure({
-  //   // Called when the token is generated or registered
-  //   onRegister: function (token) {
-  //     console.log('Registered with token:', token.token);
-  //   },
-  //   // Called when a remote or local notification is opened or received
-  //   onNotification: function (notification) {
-  //     console.log('Received notification:', notification);
-  //     // You can handle the received notification here
-  //   },
-  //   // Android-specific configuration
-  //   android: {
-  //     channelId: '812019205023-9994365901', // Replace with your desired channel ID
-  //     channelName: 'com.jeephysics.app', // Replace with your desired channel name
-  //     importance: 4, // Set the importance level (1: Default, 4: High)
-  //     vibrate: true, // Enable vibration for notifications
-  //   },
-  //   // iOS-specific configuration
-  //   ios: {
-  //     // iOS configuration options here
-  //   },
-  //   // Other configuration options...
-  // });
+    // Android-specific configuration
+    android: {
+      channelId: '812019205023-9994365901', // Replace with your desired channel ID
+      channelName: 'com.sampleapp.app', // Replace with your desired channel name
+      importance: 4, // Set the importance level (1: Default, 4: High)
+      vibrate: true, // Enable vimport { firestore } from '@react-native-firebase/firestore';
+    },
+    // iOS-specific configuration
+    ios: {
+      // iOS configuration options here
+    },
+    // Other configuration options...
+  });
 
   const MainStack = () => {
     return (
@@ -431,6 +252,22 @@ const App = () => {
   const [connected, setConnected] = useState(false);
   const [loading, setLoading] = useState(true); // Add a loading state
 
+  // useEffect(() => {
+  //   const unsubscribe = NetInfo.addEventListener(state => {
+  //     console.log('Is connected?', state.isConnected);
+  //     setConnected(state.isConnected);
+  //   });
+
+  //   // Simulate fetching data from the internet
+  //   setTimeout(() => {
+  //     setLoading(!loading); // Once data is fetched, set loading to false
+  //   }, 5000); // Adjust the delay as needed
+
+  //   return () => {
+  //     unsubscribe(); // Cleanup the event listener when the component unmounts
+  //   };
+  // }, []);
+
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       console.log('Is connected?', state.isConnected);
@@ -439,16 +276,17 @@ const App = () => {
 
     // Simulate fetching data from the internet
     setTimeout(() => {
-      setLoading(!loading); // Once data is fetched, set loading to false
+      setLoading(false); // Once data is fetched, set loading to false
     }, 5000); // Adjust the delay as needed
 
     return () => {
       unsubscribe(); // Cleanup the event listener when the component unmounts
     };
-  }, []);
+  }, []); // Remove 'loading' from the dependency array to avoid infinite loop
 
   if (loading) {
     // Show a loader until the data is fetched
+
     return (
       <>
         <Loader />

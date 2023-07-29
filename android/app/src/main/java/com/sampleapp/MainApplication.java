@@ -12,6 +12,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.microsoft.codepush.react.CodePush;
 import com.razorpay.rn.RazorpayPackage;
+import android.app.NotificationManager;
+import android.app.NotificationChannel;
+import android.os.Build;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -48,11 +51,28 @@ public class MainApplication extends Application implements ReactApplication {
     return mReactNativeHost;
   }
 
+  
+
+
   @Override
   public void onCreate() {
     super.onCreate();
+    createNotificationChannel();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+  }
+
+  private void createNotificationChannel() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannel channel = new NotificationChannel(
+        "812019205023-9994365901", // Replace with the same channel ID used in React Native
+        "com.sampleapp.app", // Replace with the same channel name used in React Native
+        NotificationManager.IMPORTANCE_HIGH
+      );
+
+      NotificationManager notificationManager = getSystemService(NotificationManager.class);
+      notificationManager.createNotificationChannel(channel);
+    }
   }
 
   /**

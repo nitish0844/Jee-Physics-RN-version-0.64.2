@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import {
   ALERT_TYPE,
@@ -18,6 +19,11 @@ import {
 import auth from '@react-native-firebase/auth';
 import {useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
+import firestore from '@react-native-firebase/firestore';
+
+const {width, height} = Dimensions.get('window');
+const responsiveWidth = width * 0.85; // 85% of the screen width
 
 const Login = () => {
   const navigation = useNavigation();
@@ -149,39 +155,27 @@ const Login = () => {
         password,
       );
       console.log('User logged in successfully:', userCredential.user);
-      showVerificationSuccessfulDialog();
+      // showVerificationSuccessfulDialog();
     } catch (error) {
       EmailLoginError();
       console.error('Error logging in:', error);
     }
   };
 
-  // const hasNavigatedRef = useRef(true);
   const hasNavigatedRef = useRef(false);
 
-  // useEffect(() => {
-  //   const unsubscribe = auth().onAuthStateChanged(user => {
-  //     if (user.emailVerified && hasNavigatedRef.current) {
-  //       // User is authenticated
-  //       hasNavigatedRef.current = false;
-  //       navigation.replace('BottomTabs');
-  //     } else {
-  //        navigation.navigate('Login');
-  //     }
-  //   });
-
-  //   return () => {
-  //     unsubscribe(); // Cleanup the listener when the component unmounts
-  //   }; // Cleanup the listener when the component unmounts
-  // }, []);
-
   useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged(user => {
+    const unsubscribe = auth().onAuthStateChanged(async user => {
       if (user && user.emailVerified && !hasNavigatedRef.current) {
         hasNavigatedRef.current = true;
+        let token = await messaging().getToken();
         // User is authenticated and email is verified,
         // navigate to the main page (BottomTabs)
         navigation.replace('BottomTabs');
+        await firestore()
+          .collection('UserFcmToken')
+          .doc(user.email)
+          .set({FcmToken: token});
       }
     });
 
@@ -326,13 +320,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     color: '#000',
     fontSize: 20,
-    top: 80,
+    top: height * 0.12,
+    // top: 80,
     left: 24,
     letterSpacing: 2,
     lineHeight: 30,
   },
   header: {
-    top: 95,
+    // top: 95,
+    top: height * 0.14,
     left: 24,
     color: '#888888',
     fontWeight: '700',
@@ -349,10 +345,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 10,
-    paddingHorizontal: 25,
-    width: '85%',
+    // paddingHorizontal: 25,
+    // width: '85%',
+    paddingHorizontal: 0.09 * responsiveWidth,
+    width: responsiveWidth * 1.05,
     alignSelf: 'center',
-    top: 50,
+    // top: 50,
+    top: height * 0.05,
   },
   icon: {
     zIndex: 99,
@@ -385,11 +384,13 @@ const styles = StyleSheet.create({
   buttonLets: {
     borderRadius: 10,
     backgroundColor: '#17A1FA',
-    height: 50,
-    width: 330,
+    height: height / 15,
+    // width: 330,
     justifyContent: 'center',
     fontWeight: '800',
-    bottom: 10,
+    // bottom: 10,
+    width: 1 * responsiveWidth,
+    bottom: height * 0.01,
   },
   already: {
     color: '#17A1FA',
@@ -405,9 +406,12 @@ const styles = StyleSheet.create({
     color: '#17A1FA',
   },
   conditionContainer: {
-    marginTop: '2%',
     alignItems: 'center',
     justifyContent: 'center',
+    width: responsiveWidth,
+    left: '2%', // Adjust the left position as per your preference
+    marginTop: height * 0.01, // Adjust the top position as per your preference
+    alignSelf: 'center',
   },
   conditionText: {
     fontWeight: '500',
