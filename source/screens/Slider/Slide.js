@@ -7,13 +7,17 @@ import {
   SafeAreaView,
   TouchableOpacity,
   LogBox,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import auth  from '@react-native-firebase/auth';
-import messaging  from '@react-native-firebase/messaging';
+import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
+import Loader from '../Loader/Loader';
+import firestore from '@react-native-firebase/firestore';
+// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SLIDER_WIDTH = Dimensions.get('window').width + 85;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
@@ -66,7 +70,6 @@ const Slide = ({navigation}) => {
   const [value, setValue] = useState(0);
   const [loginCheckInProgress, setLoginCheckInProgress] = useState(true);
 
-
   let carouselRef = useRef(null);
 
   const handleNext = () => {
@@ -93,9 +96,9 @@ const Slide = ({navigation}) => {
   const hasNavigatedRef = useRef(false);
 
   // useEffect(() => {
-  //   const unsubscribe = auth().onAuthStateChanged(async user => {
-  //     if (user && user.emailVerified && !hasNavigatedRef.current) {
-  //       hasNavigatedRef.current = true;
+  //   const checkUserStatus = async () => {
+  //     const user = auth().currentUser;
+  //     if (user && user.emailVerified) {
   //       let token = await messaging().getToken();
   //       // User is authenticated and email is verified,
   //       // navigate to the main page (BottomTabs)
@@ -105,103 +108,115 @@ const Slide = ({navigation}) => {
   //         .doc(user.email)
   //         .set({FcmToken: token});
   //     } else {
+  //       // User is not authenticated or email is not verified,
+  //       // continue showing the slide
   //       setLoginCheckInProgress(false);
   //     }
-  //   });
-
-  //   return () => {
-  //     unsubscribe(); // Cleanup the listener when the component unmounts
   //   };
+
+  //   checkUserStatus();
   // }, []);
 
   useEffect(() => {
     const checkUserStatus = async () => {
       const user = auth().currentUser;
-      if (user && user.emailVerified) {
+      if (user && user.emailVerified && !hasNavigatedRef.current) {
+        hasNavigatedRef.current = true;
         let token = await messaging().getToken();
-        // User is authenticated and email is verified,
-        // navigate to the main page (BottomTabs)
-        navigation.replace('BottomTabs');
         await firestore()
           .collection('UserFcmToken')
           .doc(user.email)
           .set({FcmToken: token});
+
+        // Store a flag indicating that the slider has been shown after successful login
+        await AsyncStorage.setItem('SliderShown', 'true');
+
+        navigation.replace('BottomTabs');
       } else {
-        // User is not authenticated or email is not verified,
-        // continue showing the slide
-        setLoginCheckInProgress(false);
+        // Check if the slider has been shown before (from AsyncStorage)
+        const sliderShownBefore = await AsyncStorage.getItem('SliderShown');
+        if (sliderShownBefore === 'true') {
+          // Slider has been shown before, navigate to the main page (BottomTabs)
+          navigation.navigate('Login');
+        } else {
+          // Slider has not been shown before, continue showing the slide
+          setLoginCheckInProgress(false);
+        }
       }
     };
-  
+
     checkUserStatus();
-  }, [])
+  }, []);
 
   return (
     <>
-    {loginCheckInProgress ? ( // Show activity indicator while login check is in progress
-    <View style={styles.loadingContainer}>
-      <ActivityIndicator size="large" color="red" />
-    </View>
-  ) : (
-    <SafeAreaView style={[styles.container2]}>
-      <View style={{}}>
-        <View style={[styles.textContainer, {marginTop: 1}]}>
-          <Text style={styles.title}>JEE Physics</Text>
+      {loginCheckInProgress ? ( // Show activity indicator while login check is in progress
+        <View style={styles.loadingContainer}>
+          {/* <ActivityIndicator size="large" color="red" /> */}
+          <Loader />
         </View>
-        <Carousel
-          layout="default"
-          layoutCardOffset={9}
-          ref={c => {
-            carouselRef = c;
-          }}
-          data={data}
-          renderItem={CarouselCardItem}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
-          onSnapToItem={index => setValue(index)}
-          useScrollView={false}
-          scrollEnabled={false}
-        />
-      </View>
-
-      <View style={styles.Dotstyle}>
-        <View>
-          {showComponent && (
-            <Pagination
-              dotsLength={data.length}
-              activeDotIndex={value}
-              carouselRef={carouselRef} // Use carouselRef.current instead of carouselRef
-              dotStyle={{
-                width: 10,
-                height: 10,
-                borderRadius: 10,
-                marginHorizontal: -5,
-                backgroundColor: '#17A1FA',
+      ) : (
+        <SafeAreaView style={[styles.container2]}>
+          <View style={{}}>
+            <View style={[styles.textContainer, {marginTop: 1}]}>
+              <Text style={styles.title}>JEE Physics</Text>
+            </View>
+            <Carousel
+              layout="default"
+              layoutCardOffset={9}
+              ref={c => {
+                carouselRef = c;
               }}
-              inactiveDotOpacity={0.4}
-              inactiveDotScale={0.6}
-              tappableDots={true}
+              data={data}
+              renderItem={CarouselCardItem}
+              sliderWidth={SLIDER_WIDTH}
+              itemWidth={ITEM_WIDTH}
+              onSnapToItem={index => setValue(index)}
+              useScrollView={false}
+              scrollEnabled={false}
             />
-          )}
-        </View>
-      </View>
+          </View>
 
-      <View style={styles.buttonContainer}>
-        {/* Fixed height for the button container */}
-        <View style={{height: 50}}>
-          {value === data.length - 1 ? (
-            <TouchableOpacity onPress={buttonfuntion} style={styles.buttonLets}>
-              <Text style={styles.buttonText}>Let's Crack JEE</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={buttonfuntion} style={styles.button}>
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
-    </SafeAreaView>
-  )}
+          <View style={styles.Dotstyle}>
+            <View>
+              {showComponent && (
+                <Pagination
+                  dotsLength={data.length}
+                  activeDotIndex={value}
+                  carouselRef={carouselRef} // Use carouselRef.current instead of carouselRef
+                  dotStyle={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 10,
+                    marginHorizontal: -5,
+                    backgroundColor: '#17A1FA',
+                  }}
+                  inactiveDotOpacity={0.4}
+                  inactiveDotScale={0.6}
+                  tappableDots={true}
+                />
+              )}
+            </View>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            {/* Fixed height for the button container */}
+            <View style={{height: 50}}>
+              {value === data.length - 1 ? (
+                <TouchableOpacity
+                  onPress={buttonfuntion}
+                  style={styles.buttonLets}>
+                  <Text style={styles.buttonText}>Let's Crack JEE</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={buttonfuntion} style={styles.button}>
+                  <Text style={styles.buttonText}>Next</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        </SafeAreaView>
+      )}
     </>
   );
 };
@@ -306,6 +321,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
 });
