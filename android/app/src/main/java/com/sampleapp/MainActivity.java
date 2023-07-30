@@ -1,4 +1,6 @@
 package com.sampleapp;
+import android.os.Bundle; // here
+// import org.devio.rn.splashscreen.SplashScreen;
 
 import com.facebook.react.ReactActivity;
 
@@ -12,4 +14,10 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "sampleapp";
   }
+
+  //  @Override
+  //   protected void onCreate(Bundle savedInstanceState) {
+  //       SplashScreen.show(this);  // here
+  //       super.onCreate(savedInstanceState);
+  //   }
 }

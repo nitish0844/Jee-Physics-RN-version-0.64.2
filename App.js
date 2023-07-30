@@ -7,15 +7,17 @@ import Feather from 'react-native-vector-icons/Feather.js';
 import NetInfo from '@react-native-community/netinfo';
 // import dynamicLinks from '@react-native-firebase/dynamic-links';
 import NoInternet from './source/screens/NoInternet.js';
+import LottieView from 'lottie-react-native';
 
 import messaging from '@react-native-firebase/messaging';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 
 import Slide from './source/screens/Slider/Slide.js';
 import Signup from './source/screens/Login and Signup screen/SignUp.js';
 import LoginScreen from './source/screens/Login and Signup screen/LoginScreen.js';
 import ForgetPassword from './source/screens/Login and Signup screen/ForgetPassword.js';
 // import NewPassword from './source/screens/Login and Signup screen/NewPassword.js';
+import {useRoute} from '@react-navigation/native';
 
 import MainPage from './source/screens/Tabs/MainPage.js';
 import PdfViewer from './source/components/Pdf/PdfViewer.js';
@@ -27,7 +29,9 @@ import {useNavigation} from '@react-navigation/native';
 import PushNotification from 'react-native-push-notification';
 
 import Payment from './source/components/Payment/Payment.js';
-import Loader from './source/components/Loader/Loader.js';
+// import Loader from './source/components/Loader/Loader.js';
+import SplashScreen from './source/screens/SplashScreen/SplashScreen.js';
+import auth from '@react-native-firebase/auth';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,20 +68,6 @@ const RootNavigator = () => {
 
     return unsubscribe;
   }, []);
-
-  // const getDeviceToken = async () => {
-  //   try {
-  //     let token = await messaging().getToken();
-  //     const currentUser = auth().currentUser;
-  //     console.log('Fcm Token', token);
-  //     await firestore()
-  //       .collection('UserFcmToken')
-  //       .doc(currentUser.email)
-  //       .set({FcmToken: token});
-  //   } catch (error) {
-  //     console.error('Error getting FCM token:', error);
-  //   }
-  // };
 
   const requestUserPermission = async () => {
     try {
@@ -248,36 +238,20 @@ const RootNavigator = () => {
   );
 };
 
-const App = () => {
+const App = ({navigation, route}) => {
   const [connected, setConnected] = useState(false);
   const [loading, setLoading] = useState(true); // Add a loading state
-
-  // useEffect(() => {
-  //   const unsubscribe = NetInfo.addEventListener(state => {
-  //     console.log('Is connected?', state.isConnected);
-  //     setConnected(state.isConnected);
-  //   });
-
-  //   // Simulate fetching data from the internet
-  //   setTimeout(() => {
-  //     setLoading(!loading); // Once data is fetched, set loading to false
-  //   }, 5000); // Adjust the delay as needed
-
-  //   return () => {
-  //     unsubscribe(); // Cleanup the event listener when the component unmounts
-  //   };
-  // }, []);
-
+  
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       console.log('Is connected?', state.isConnected);
       setConnected(state.isConnected);
-    });
+    })
 
     // Simulate fetching data from the internet
     setTimeout(() => {
       setLoading(false); // Once data is fetched, set loading to false
-    }, 5000); // Adjust the delay as needed
+    }, 7500); // Adjust the delay as needed
 
     return () => {
       unsubscribe(); // Cleanup the event listener when the component unmounts
@@ -288,23 +262,23 @@ const App = () => {
     // Show a loader until the data is fetched
 
     return (
-      <>
-        <Loader />
-      </>
+      <SplashScreen  />
     );
   }
 
+  
+
   return (
     <>
-      {!connected ? (
-        <>
-          <NoInternet />
-        </>
-      ) : (
-        <NavigationContainer>
+      <NavigationContainer>
+        {!connected ? (
+          <>
+            <NoInternet />
+          </>
+        ) : (
           <RootNavigator />
-        </NavigationContainer>
-      )}
+        )}
+      </NavigationContainer>
     </>
   );
 };

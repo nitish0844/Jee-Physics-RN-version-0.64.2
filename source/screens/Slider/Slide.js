@@ -7,10 +7,13 @@ import {
   SafeAreaView,
   TouchableOpacity,
   LogBox,
+  ActivityIndicator
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 
 import Carousel, {Pagination} from 'react-native-snap-carousel';
+import auth  from '@react-native-firebase/auth';
+import messaging  from '@react-native-firebase/messaging';
 
 const SLIDER_WIDTH = Dimensions.get('window').width + 85;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
@@ -61,6 +64,8 @@ const CarouselCardItem = ({item, index, blurHeight}) => {
 
 const Slide = ({navigation}) => {
   const [value, setValue] = useState(0);
+  const [loginCheckInProgress, setLoginCheckInProgress] = useState(true);
+
 
   let carouselRef = useRef(null);
 
@@ -85,7 +90,59 @@ const Slide = ({navigation}) => {
 
   const [showComponent, setShowComponent] = useState(true);
 
+  const hasNavigatedRef = useRef(false);
+
+  // useEffect(() => {
+  //   const unsubscribe = auth().onAuthStateChanged(async user => {
+  //     if (user && user.emailVerified && !hasNavigatedRef.current) {
+  //       hasNavigatedRef.current = true;
+  //       let token = await messaging().getToken();
+  //       // User is authenticated and email is verified,
+  //       // navigate to the main page (BottomTabs)
+  //       navigation.replace('BottomTabs');
+  //       await firestore()
+  //         .collection('UserFcmToken')
+  //         .doc(user.email)
+  //         .set({FcmToken: token});
+  //     } else {
+  //       setLoginCheckInProgress(false);
+  //     }
+  //   });
+
+  //   return () => {
+  //     unsubscribe(); // Cleanup the listener when the component unmounts
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    const checkUserStatus = async () => {
+      const user = auth().currentUser;
+      if (user && user.emailVerified) {
+        let token = await messaging().getToken();
+        // User is authenticated and email is verified,
+        // navigate to the main page (BottomTabs)
+        navigation.replace('BottomTabs');
+        await firestore()
+          .collection('UserFcmToken')
+          .doc(user.email)
+          .set({FcmToken: token});
+      } else {
+        // User is not authenticated or email is not verified,
+        // continue showing the slide
+        setLoginCheckInProgress(false);
+      }
+    };
+  
+    checkUserStatus();
+  }, [])
+
   return (
+    <>
+    {loginCheckInProgress ? ( // Show activity indicator while login check is in progress
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="red" />
+    </View>
+  ) : (
     <SafeAreaView style={[styles.container2]}>
       <View style={{}}>
         <View style={[styles.textContainer, {marginTop: 1}]}>
@@ -144,6 +201,8 @@ const Slide = ({navigation}) => {
         </View>
       </View>
     </SafeAreaView>
+  )}
+    </>
   );
 };
 
@@ -242,5 +301,11 @@ const styles = StyleSheet.create({
     bottom: 55,
     left: '50%',
     alignSelf: 'flex-end',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent'
   },
 });

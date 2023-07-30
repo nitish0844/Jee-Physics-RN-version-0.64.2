@@ -9,6 +9,7 @@ import {
   TextInput,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import {
   ALERT_TYPE,
@@ -31,6 +32,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [email, setEmail] = useState('');
+  const [loginCheckInProgress, setLoginCheckInProgress] = useState(true);
 
   const handlePasswordChange = text => {
     setPassword(text);
@@ -176,6 +178,8 @@ const Login = () => {
           .collection('UserFcmToken')
           .doc(user.email)
           .set({FcmToken: token});
+      } else {
+        setLoginCheckInProgress(false);
       }
     });
 
@@ -201,110 +205,120 @@ const Login = () => {
 
   return (
     <AlertNotificationRoot>
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <View style={{top: '5%', alignItems: 'flex-end', right: '8%'}}>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-              <Text style={{color: '#60A5FA', fontWeight: '700'}}>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{bottom: '2%'}}>
-            <Text style={styles.title}>Hi, Welcome Back👋</Text>
-            <Text style={styles.header}>
-              Login your account to start you JEE Physics
-            </Text>
-          </View>
-
-          <View style={{marginTop: '20%'}}>
-            <View style={styles.inputContainer}>
-              <Image
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/email.png?alt=media&token=001c9b60-d5a2-4317-a113-32de56a5b5d5',
-                }}
-                style={styles.icon}
-              />
-              <TextInput
-                autoCapitalize="none"
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#000"
-                onChangeText={text => setEmail(text)}
-                autoCorrect={false}
-                editable={true}
-              />
-            </View>
-
-            <View style={[styles.inputContainer, {marginTop: 15}]}>
-              <Image
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/password%20(1).png?alt=media&token=96105cab-e1eb-4979-a08f-672fa95280e2',
-                }}
-                style={styles.icon}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry
-                value={password}
-                onChangeText={handlePasswordChange}
-                autoCapitalize="none"
-                placeholderTextColor="#000"
-                editable={true}
-              />
-            </View>
-            <View style={styles.ruleText}>
-              {!isPasswordValid && (
-                <Text style={styles.errorText}>
-                  Password must have at least 8 characters, one uppercase
-                  letter, one lowercase letter, and one digit.
-                </Text>
-              )}
-            </View>
-            <View style={styles.ForgetPasswordContainer}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('ForgetPassword')}>
-                <Text
-                  style={{
-                    fontWeight: '500',
-                    color: '#17A1FA',
-                    textDecorationLine: 'underline',
-                    textDecorationStyle: 'dotted',
-                  }}>
-                  Forget Password ?
+      {loginCheckInProgress ? ( // Show activity indicator while login check is in progress
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="red" />
+        </View>
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
+            <View style={{top: '5%', alignItems: 'flex-end', right: '8%'}}>
+              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                <Text style={{color: '#60A5FA', fontWeight: '700'}}>
+                  Sign Up
                 </Text>
               </TouchableOpacity>
             </View>
-
-            <View
-              style={{
-                alignItems: 'center',
-                alignSelf: 'center',
-                alignContent: 'center',
-                marginTop: '68%',
-              }}>
-              <TouchableOpacity
-                onPress={HandleLoginMain}
-                style={styles.buttonLets}>
-                <Text style={styles.buttonText}>Login</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.conditionContainer}>
-              <Text style={styles.conditionText}>
-                By continuing, you agree to our
+            <View style={{bottom: '2%'}}>
+              <Text style={styles.title}>Hi, Welcome Back👋</Text>
+              <Text style={styles.header}>
+                Login your account to start you JEE Physics
               </Text>
-              <View style={styles.policyContainer}>
-                <TouchableOpacity>
-                  <Text style={styles.policyText}>Terms &amp; Conditions </Text>
-                </TouchableOpacity>
-                <Text style={styles.conditionText}>and</Text>
-                <TouchableOpacity>
-                  <Text style={styles.policyText}> Privacy Policy</Text>
+            </View>
+
+            <View style={{marginTop: '20%'}}>
+              <View style={styles.inputContainer}>
+                <Image
+                  source={{
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/email.png?alt=media&token=001c9b60-d5a2-4317-a113-32de56a5b5d5',
+                  }}
+                  style={styles.icon}
+                />
+                <TextInput
+                  autoCapitalize="none"
+                  style={styles.input}
+                  placeholder="Email"
+                  placeholderTextColor="#000"
+                  onChangeText={text => setEmail(text)}
+                  autoCorrect={false}
+                  editable={true}
+                />
+              </View>
+
+              <View style={[styles.inputContainer, {marginTop: 15}]}>
+                <Image
+                  source={{
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/password%20(1).png?alt=media&token=96105cab-e1eb-4979-a08f-672fa95280e2',
+                  }}
+                  style={styles.icon}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Password"
+                  secureTextEntry
+                  value={password}
+                  onChangeText={handlePasswordChange}
+                  autoCapitalize="none"
+                  placeholderTextColor="#000"
+                  editable={true}
+                />
+              </View>
+              <View style={styles.ruleText}>
+                {!isPasswordValid && (
+                  <Text style={styles.errorText}>
+                    Password must have at least 8 characters, one uppercase
+                    letter, one lowercase letter, and one digit.
+                  </Text>
+                )}
+              </View>
+              <View style={styles.ForgetPasswordContainer}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ForgetPassword')}>
+                  <Text
+                    style={{
+                      fontWeight: '500',
+                      color: '#17A1FA',
+                      textDecorationLine: 'underline',
+                      textDecorationStyle: 'dotted',
+                    }}>
+                    Forget Password ?
+                  </Text>
                 </TouchableOpacity>
               </View>
+
+              <View
+                style={{
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  marginTop: '68%',
+                }}>
+                <TouchableOpacity
+                  onPress={HandleLoginMain}
+                  style={styles.buttonLets}>
+                  <Text style={styles.buttonText}>Login</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.conditionContainer}>
+                <Text style={styles.conditionText}>
+                  By continuing, you agree to our
+                </Text>
+                <View style={styles.policyContainer}>
+                  <TouchableOpacity>
+                    <Text style={styles.policyText}>
+                      Terms &amp; Conditions{' '}
+                    </Text>
+                  </TouchableOpacity>
+                  <Text style={styles.conditionText}>and</Text>
+                  <TouchableOpacity>
+                    <Text style={styles.policyText}> Privacy Policy</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
+      )}
     </AlertNotificationRoot>
   );
 };
@@ -429,5 +443,11 @@ const styles = StyleSheet.create({
   ForgetPasswordContainer: {
     left: '8%',
     top: 8,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent'
   },
 });
