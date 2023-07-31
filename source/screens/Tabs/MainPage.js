@@ -132,7 +132,7 @@ const MainPage = () => {
             />
           </View>
           <View>
-            {/* <Carousel
+            <Carousel
               ref={carouselRef}
               // layoutCardOffset={true}
               // sliderWidth={screenWidth}
@@ -145,7 +145,7 @@ const MainPage = () => {
               autoplay={true}
               loop={true}
               autoplayDelay={3000}
-            /> */}
+            />
           </View>
           <View id="Popular Notes">
             <PopularNotes />

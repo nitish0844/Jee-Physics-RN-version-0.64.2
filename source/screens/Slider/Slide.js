@@ -95,28 +95,6 @@ const Slide = ({navigation}) => {
 
   const hasNavigatedRef = useRef(false);
 
-  // useEffect(() => {
-  //   const checkUserStatus = async () => {
-  //     const user = auth().currentUser;
-  //     if (user && user.emailVerified) {
-  //       let token = await messaging().getToken();
-  //       // User is authenticated and email is verified,
-  //       // navigate to the main page (BottomTabs)
-  //       navigation.replace('BottomTabs');
-  //       await firestore()
-  //         .collection('UserFcmToken')
-  //         .doc(user.email)
-  //         .set({FcmToken: token});
-  //     } else {
-  //       // User is not authenticated or email is not verified,
-  //       // continue showing the slide
-  //       setLoginCheckInProgress(false);
-  //     }
-  //   };
-
-  //   checkUserStatus();
-  // }, []);
-
   useEffect(() => {
     const checkUserStatus = async () => {
       const user = auth().currentUser;
@@ -130,14 +108,13 @@ const Slide = ({navigation}) => {
 
         // Store a flag indicating that the slider has been shown after successful login
         await AsyncStorage.setItem('SliderShown', 'true');
-
         navigation.replace('BottomTabs');
       } else {
         // Check if the slider has been shown before (from AsyncStorage)
         const sliderShownBefore = await AsyncStorage.getItem('SliderShown');
         if (sliderShownBefore === 'true') {
           // Slider has been shown before, navigate to the main page (BottomTabs)
-          navigation.navigate('Login');
+          navigation.replace('Login');
         } else {
           // Slider has not been shown before, continue showing the slide
           setLoginCheckInProgress(false);
@@ -145,7 +122,11 @@ const Slide = ({navigation}) => {
       }
     };
 
-    checkUserStatus();
+    setTimeout(() => {
+      checkUserStatus();
+    }, 500);
+
+    // checkUserStatus();
   }, []);
 
   return (

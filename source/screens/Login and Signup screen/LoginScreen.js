@@ -22,6 +22,7 @@ import {useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');
 const responsiveWidth = width * 0.85; // 85% of the screen width
@@ -178,6 +179,8 @@ const Login = () => {
           .collection('UserFcmToken')
           .doc(user.email)
           .set({FcmToken: token});
+
+        await AsyncStorage.setItem('SliderShown', 'true');
       } else {
         setLoginCheckInProgress(false);
       }

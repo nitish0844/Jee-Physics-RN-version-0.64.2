@@ -24,7 +24,7 @@ import NotesMain from './source/screens/Tabs/NotesMain.js';
 import ProfileMain from './source/screens/Tabs/ProfileMain.js';
 import PurchaseMain from './source/screens/Tabs/PurchaseMain.js';
 import {useNavigation} from '@react-navigation/native';
-import PushNotification from 'react-native-push-notification';
+import PushNotification, {Importance} from 'react-native-push-notification';
 
 import Payment from './source/components/Payment/Payment.js';
 // import Loader from './source/components/Loader/Loader.js';
@@ -49,10 +49,6 @@ const RootNavigator = () => {
   //   return () => unsubscribe();
   // }, []);
 
-  // useEffect(() => {
-  //   getDeviceToken();
-  // }, []);
-
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
@@ -62,6 +58,14 @@ const RootNavigator = () => {
         message: body,
         channelId: '812019205023-9994365901', // Make sure this matches the channelId you defined in PushNotification.configure()
         category: '812019205023-9994365901',
+        vibration: 300,
+        vibrate: true,
+        playSound: true,
+        soundName: 'notification',
+        largeIconUrl:
+          'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
+        bigLargeIconUrl:
+          'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
       });
     });
 
@@ -102,8 +106,12 @@ const RootNavigator = () => {
     android: {
       channelId: '812019205023-9994365901', // Replace with your desired channel ID
       channelName: 'com.sampleapp.app', // Replace with your desired channel name
-      importance: 4, // Set the importance level (1: Default, 4: High)
+      // importance: 4, // Set the importance level (1: Default, 4: High)
       vibrate: true, // Enable vimport { firestore } from '@react-native-firebase/firestore';
+      vibration: 300,
+      playSound: true,
+      soundName: 'notification',
+      importance: Importance.HIGH,
     },
     // iOS-specific configuration
     ios: {

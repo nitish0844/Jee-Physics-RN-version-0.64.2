@@ -19,6 +19,7 @@ import NetInfo from '@react-native-community/netinfo';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import {
 //   GoogleSignin,
@@ -180,6 +181,8 @@ const Signup = () => {
             .collection('UserFcmToken')
             .doc(user.email)
             .set({FcmToken: token});
+
+          await AsyncStorage.setItem('SliderShown', 'true');
 
           console.log('Data Saved');
 
