@@ -58,14 +58,14 @@ const RootNavigator = () => {
         message: body,
         channelId: '812019205023-9994365901', // Make sure this matches the channelId you defined in PushNotification.configure()
         category: '812019205023-9994365901',
-        vibration: 300,
+        vibration: 500,
         vibrate: true,
         playSound: true,
-        soundName: 'notification',
-        largeIconUrl:
-          'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
-        bigLargeIconUrl:
-          'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
+        soundName: 'notification.mp3',
+        // largeIconUrl:
+        //   'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
+        // bigLargeIconUrl:
+        //   'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
       });
     });
 
@@ -108,9 +108,9 @@ const RootNavigator = () => {
       channelName: 'com.sampleapp.app', // Replace with your desired channel name
       // importance: 4, // Set the importance level (1: Default, 4: High)
       vibrate: true, // Enable vimport { firestore } from '@react-native-firebase/firestore';
-      vibration: 300,
+      vibration: 500,
       playSound: true,
-      soundName: 'notification',
+      soundName: 'notification.mp3',
       importance: Importance.HIGH,
     },
     // iOS-specific configuration

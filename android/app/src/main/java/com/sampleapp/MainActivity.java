@@ -31,7 +31,7 @@ public class MainActivity extends ReactActivity {
                   .build();
           notificationChannel.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/notification"), att);
           notificationChannel.enableVibration(true);
-          notificationChannel.setVibrationPattern(new long[]{400, 1000, 400});
+          notificationChannel.setVibrationPattern(new long[]{400, 400});
           notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
           NotificationManager manager = getSystemService(NotificationManager.class);
           manager.createNotificationChannel(notificationChannel);

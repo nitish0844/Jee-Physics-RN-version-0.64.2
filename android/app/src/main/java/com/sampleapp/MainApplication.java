@@ -79,21 +79,21 @@ public class MainApplication extends Application implements ReactApplication {
     //   notificationManager.createNotificationChannel(channel);
     // }
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-          NotificationChannel notificationChannel = new NotificationChannel("812019205023-9994365901", "com.sampleapp.app", NotificationManager.IMPORTANCE_HIGH);
-          notificationChannel.setShowBadge(true);
-          notificationChannel.setDescription("");
-          AudioAttributes att = new AudioAttributes.Builder()
-                  .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                  .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                  .build();
-          notificationChannel.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/notification"), att);
-          notificationChannel.enableVibration(true);
-          notificationChannel.setVibrationPattern(new long[]{400, 400});
-          notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-          NotificationManager manager = getSystemService(NotificationManager.class);
-          manager.createNotificationChannel(notificationChannel);
-      }
+    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    //       NotificationChannel notificationChannel = new NotificationChannel("812019205023-9994365901", "com.sampleapp.app", NotificationManager.IMPORTANCE_HIGH);
+    //       notificationChannel.setShowBadge(true);
+    //       notificationChannel.setDescription("");
+    //       AudioAttributes att = new AudioAttributes.Builder()
+    //               .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+    //               .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+    //               .build();
+    //       notificationChannel.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/notification"), att);
+    //       notificationChannel.enableVibration(true);
+    //       notificationChannel.setVibrationPattern(new long[]{400, 400});
+    //       notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+    //       NotificationManager manager = getSystemService(NotificationManager.class);
+    //       manager.createNotificationChannel(notificationChannel);
+    //   }
   }
 
   /**
