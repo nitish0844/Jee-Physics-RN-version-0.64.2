@@ -11,6 +11,7 @@ import {
   Dimensions,
   LogBox,
 } from 'react-native';
+import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import {
   ALERT_TYPE,
   Dialog,
@@ -154,6 +155,7 @@ const MainPage = () => {
           <PhysicsFormula />
           <CombinedUnitandFormula />
         </ScrollView>
+        <FloatingButton />
       </SafeAreaView>
     </AlertNotificationRoot>
   );
