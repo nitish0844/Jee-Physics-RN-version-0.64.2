@@ -5,6 +5,7 @@ import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 
+
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -20,6 +21,9 @@ import android.media.AudioAttributes;
 import android.net.Uri;
 import android.content.ContentResolver;
 import androidx.core.app.NotificationCompat;
+
+
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -58,6 +62,8 @@ public class MainApplication extends Application implements ReactApplication {
 
   
 
+  
+
 
   @Override
   public void onCreate() {
@@ -66,6 +72,7 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
+
 
   private void createNotificationChannel() {
     // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -127,3 +134,5 @@ public class MainApplication extends Application implements ReactApplication {
     }
   }
 }
+
+

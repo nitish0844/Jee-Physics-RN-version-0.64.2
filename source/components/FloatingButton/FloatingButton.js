@@ -127,7 +127,7 @@
 //   },
 // });
 
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -137,13 +137,17 @@ import {
   Animated,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useNavigation} from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 const FloatingButton = () => {
+  const navigation = useNavigation();
   const buttonSize = 60;
   const bottomTabsHeight = 60;
+
+  // CrispChat.initialize({websiteId: 'a8fcd120-1b98-4e79-90b7-cc02a26163a1'});
 
   const initialX = screenWidth - buttonSize - 16; // 16 is a margin from the right edge
   const initialY = screenHeight - bottomTabsHeight - buttonSize - 16; // 16 is a margin from the bottom edge
@@ -209,35 +213,42 @@ const FloatingButton = () => {
       );
       position.setValue({x: newX, y: newY});
     },
-    // onPanResponderRelease: () => {
-    //   setMoving(false);
-    //   const targetCorner = getTargetCorner(buttonPosition.x, buttonPosition.y);
-    //   Animated.spring(position, {
-    //     toValue: targetCorner,
-    //     useNativeDriver: false,
-    //   }).start();
-    // },
 
-    onPanResponderRelease: (event, gestureState) => {
+    onPanResponderRelease: () => {
       setMoving(false);
-
-      // Use the last known position to calculate the target corner
-      const newX = buttonPosition.x + gestureState.dx;
-      const newY = buttonPosition.y + gestureState.dy;
-      const targetCorner = getTargetCorner(newX, newY);
-
+      const targetCorner = getTargetCorner(buttonPosition.x, buttonPosition.y);
       Animated.spring(position, {
         toValue: targetCorner,
         useNativeDriver: false,
-      }).start(() => {
-        // Update the buttonPosition state after the animation is complete
-        setButtonPosition(targetCorner);
-      });
+      }).start();
     },
+
+    // onPanResponderRelease: (event, gestureState) => {
+    //   setMoving(false);
+
+    //   // Use the last known position to calculate the target corner
+    //   const newX = buttonPosition.x + gestureState.dx;
+    //   const newY = buttonPosition.y + gestureState.dy;
+    //   const targetCorner = getTargetCorner(newX, newY);
+
+    //   Animated.spring(position, {
+    //     toValue: targetCorner,
+    //     useNativeDriver: false,
+    //   }).start(() => {
+    //     // Update the buttonPosition state after the animation is complete
+    //     setButtonPosition(targetCorner);
+    //   });
+    // },
     onPanResponderTerminate: () => {
       setMoving(false);
     },
   });
+
+  const onButtonPress = () => {
+    navigation.navigate('ChatCrips', {
+      uri: 'https://go.crisp.chat/chat/embed/?website_id=a8fcd120-1b98-4e79-90b7-cc02a26163a1',
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -246,7 +257,7 @@ const FloatingButton = () => {
         style={[styles.floatingButton, {top: position.y, left: position.x}]}>
         {/* Your floating button content */}
         <TouchableOpacity
-          onPress={() => !moving && console.log('Button pressed!')}
+          onPress={() => !moving && onButtonPress()}
           activeOpacity={1}
           style={styles.touchable}>
           <AntDesign

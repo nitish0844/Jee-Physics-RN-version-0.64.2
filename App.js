@@ -31,6 +31,8 @@ import Payment from './source/components/Payment/Payment.js';
 import SplashScreen from './source/screens/SplashScreen/SplashScreen.js';
 
 import Loader from './source/screens/Loader/Loader.js';
+import SearchComponent from './source/components/SearchBar function/SearchPage.js';
+import ChatCrips from './source/components/Customer_Service/ChatCrisp.js';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -240,12 +242,22 @@ const RootNavigator = () => {
         component={Payment}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="SearchPage"
+        component={SearchComponent}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChatCrips"
+        component={ChatCrips}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
     // </NavigationContainer>
   );
 };
 
-const App = ({navigation, route}) => {
+const App = () => {
   const [connected, setConnected] = useState(false);
   // const [loading, setLoading] = useState(true); // Add a loading state
 
@@ -270,6 +282,8 @@ const App = ({navigation, route}) => {
 
   //   return <SplashScreen />;
   // }
+
+  // CrispChat.initialize({websiteId: 'a8fcd120-1b98-4e79-90b7-cc02a26163a1'});
 
   return (
     <>

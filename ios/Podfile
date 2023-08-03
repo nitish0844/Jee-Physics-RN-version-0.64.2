@@ -14,6 +14,8 @@ target 'sampleapp' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'react-native-crisp-chat-sdk', :path => '../node_modules/react-native-crisp-chat-sdk'
+
   target 'sampleappTests' do
     inherit! :complete
     # Pods for testing
