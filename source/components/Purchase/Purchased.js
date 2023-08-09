@@ -1,58 +1,111 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, ScrollView, RefreshControl} from 'react-native';
+import React, {useState} from 'react';
 
-const data = [
-  {
-    code: '001',
-    name: 'Course A',
-  },
-  {
-    code: '002',
-    name: 'Course B',
-  },
-  // Add more courses to the data array as needed
-];
+const Purchased = ({userData, handleRefresh}) => {
+  const [refreshing, setRefreshing] = useState(false);
 
-const Purchased = ({userData}) => {
-  const courseCodeToNameMap = {};
+  const onRefresh = async () => {
+    setRefreshing(true); // Start refreshing
+    await handleRefresh(); // Call the handleRefresh function passed from parent
+    setTimeout(() => {
+      setRefreshing(false); // Stop the refresh animation
+    }, 1000);
+  };
 
-  data.forEach(course => {
-    courseCodeToNameMap[course.code] = course.name;
-  });
+  // return (
+  //   <ScrollView
+  //     contentContainerStyle={styles.scrollViewContainer}
+  //     refreshControl={
+  //       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+  //     }>
+  //     <View style={styles.purchasedContainer}>
+  //       {userData &&
+  //         Object.keys(userData).map(category => {
+  //           const categoryData = userData[category];
+  //           return (
+  //             <View key={category} style={styles.categoryContainer}>
+  //               <Text style={styles.categoryTitle}>{category}</Text>
+  //               {Object.keys(categoryData).map(
+  //                 courseName =>
+  //                   // Check if the course value is true before rendering
+  //                   categoryData[courseName] === true && (
+  //                     <View key={courseName} style={styles.courseCard}>
+  //                       <Text style={styles.courseName}>{courseName}</Text>
+  //                     </View>
+  //                   ),
+  //               )}
+  //             </View>
+  //           );
+  //         })}
+  //     </View>
+  //   </ScrollView>
+  // );
 
   return (
-    <View style={styles.purchasedContainer}>
-      {userData &&
-        Object.entries(userData).map(([courseCode, isPurchased]) => {
-          if (isPurchased) {
-            const courseName = courseCodeToNameMap[courseCode]; // Get the course name from the map
-            return (
-              <View key={courseCode} style={styles.courseCard}>
-                <Text style={styles.courseName}>{courseName}</Text>
-              </View>
+    <ScrollView
+      contentContainerStyle={styles.scrollViewContainer}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
+      <View style={styles.purchasedContainer}>
+        {userData &&
+          Object.keys(userData).map(category => {
+            const categoryData = userData[category];
+
+            // Check if there is at least one course with true value in this category
+            const hasTrueCourse = Object.values(categoryData).some(
+              value => value === true,
             );
-          }
-        })}
-    </View>
+
+            if (hasTrueCourse) {
+              return (
+                <View key={category} style={styles.categoryContainer}>
+                  <Text style={styles.categoryTitle}>{category}</Text>
+                  {Object.keys(categoryData).map(
+                    courseName =>
+                      categoryData[courseName] === true && (
+                        <View key={courseName} style={styles.courseCard}>
+                          <Text style={styles.courseName}>{courseName}</Text>
+                        </View>
+                      ),
+                  )}
+                </View>
+              );
+            }
+
+            return null; // Skip rendering this category container
+          })}
+      </View>
+    </ScrollView>
   );
 };
 
 export default Purchased;
 
 const styles = StyleSheet.create({
+  scrollViewContainer: {
+    flexGrow: 1,
+  },
   purchasedContainer: {
     margin: 20,
   },
+  categoryContainer: {
+    marginBottom: 20,
+  },
+  categoryTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 10,
+  },
   courseCard: {
     backgroundColor: '#d0eff5',
-    padding: 20,
+    padding: 10,
     borderRadius: 10,
-    marginBottom: 15,
+    marginBottom: 5,
   },
-  courseCode: {
+  courseName: {
     fontSize: 16,
     fontWeight: '700',
-    marginBottom: 5,
   },
   // Add more styles for other course information
 });

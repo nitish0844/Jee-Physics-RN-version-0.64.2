@@ -87,7 +87,7 @@ const CombinedUnitandFormula = () => {
     }, []),
   );
 
-  console.log(userData);
+  // console.log(userData);
 
   return (
     <View style={{bottom: 50}}>

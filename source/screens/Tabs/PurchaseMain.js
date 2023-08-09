@@ -18,27 +18,6 @@ import Purchased from '../../components/Purchase/Purchased';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-const data = [
-  {
-    code: '001',
-  },
-  {
-    code: '002',
-  },
-  {
-    code: '003',
-  },
-  {
-    code: '004',
-  },
-  {
-    code: '005',
-  },
-  {
-    code: '006',
-  },
-];
-
 const PurchaseMain = ({route}) => {
   const navigation = useNavigation();
   const [purchased, setPurchased] = useState(false);
@@ -56,8 +35,6 @@ const PurchaseMain = ({route}) => {
       setSpinning(false);
     }
   };
-
-  console.log(userData);
 
   useEffect(() => {
     // Add a listener for the keyboard dismiss event
@@ -78,29 +55,44 @@ const PurchaseMain = ({route}) => {
     try {
       const currentUser = auth().currentUser;
       if (!currentUser) {
-        // User is not logged in
         return;
       }
 
-      const docSnapshot = await firestore()
+      const userDocRef = firestore()
         .collection('UserPaidNotes')
-        .doc(currentUser.email)
-        .collection('FreeNotes')
-        .doc('FreeNotes')
-        .get();
+        .doc(currentUser.email);
 
-      const userData = docSnapshot.data();
-      setUserData(userData);
+      const userDocSnapshot = await userDocRef.get();
 
-      const hasPurchasedCourses = Object.values(userData).some(
-        isPurchased => isPurchased === true,
-      );
+      if (userDocSnapshot.exists) {
+        const userData = {};
 
-      setPurchased(hasPurchasedCourses);
-      setLoading(false);
+        // Get a list of all subcollections within the user's document
+        const subcollectionNames = ['Formulas', 'FreeNotes', 'Advance Units'];
+
+        // Fetch data from each subcollection and its subdocuments
+        for (const subcollectionName of subcollectionNames) {
+          const subcollectionRef = userDocRef.collection(subcollectionName);
+          const subcollectionSnapshot = await subcollectionRef.get();
+
+          subcollectionSnapshot.forEach(subDoc => {
+            const subData = subDoc.data();
+            const subDocId = subDoc.id;
+            userData[subDocId] = subData;
+          });
+        }
+
+        // console.log('Fetched userData:', userData); // Add this line to log fetched data
+
+        setUserData(userData);
+        setLoading(false);
+        setPurchased(true);
+      } else {
+        setLoading(false);
+      }
     } catch (error) {
-      console.error('Error :', error);
-      setLoading(false); // Error occurred, set loading to false
+      console.error('Error:', error);
+      setLoading(false);
     }
   };
 
@@ -116,6 +108,12 @@ const PurchaseMain = ({route}) => {
 
     fetchUserData();
   }, []);
+
+  const handleRefresh = () => {
+    // setRefreshing(true); // Start refreshing
+    purchaseData(); // Fetch the data again
+    // setRefreshing(false); // Stop the refresh animation
+  };
 
   return (
     <SafeAreaView style={styles.Container}>
@@ -152,7 +150,9 @@ const PurchaseMain = ({route}) => {
       {loading ? (
         <ActivityIndicator style={styles.loader} size="large" color="#000" />
       ) : purchased ? (
-        selectedTag === 'All' && <Purchased userData={userData} data={data} />
+        selectedTag === 'All' && (
+          <Purchased userData={userData} handleRefresh={handleRefresh} />
+        )
       ) : (
         <NotPurchased />
       )}
