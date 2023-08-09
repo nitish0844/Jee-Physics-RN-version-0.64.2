@@ -43,8 +43,8 @@ const ProfileImage = () => {
 
   const imageObject = {
     uri: imageURL, // Pass the imageURL in the 'uri' field
-    width: 250,
-    height: 250,
+    width: 200,
+    height: 200,
     animationType: 'slide',
   };
 
