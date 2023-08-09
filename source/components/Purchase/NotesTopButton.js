@@ -44,11 +44,11 @@ const NotesTopButton = ({selectedTag}) => {
             All
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleTagPress('Notes')}>
+        <TouchableOpacity onPress={() => handleTagPress('Advance Units')}>
           <Text
             style={[
               styles.text,
-              pressed === 'Notes' && styles.selectedText,
+              pressed === 'Advance Units' && styles.selectedText,
               {width: getTextWidth('Notes')},
             ]}>
             Notes
@@ -64,11 +64,11 @@ const NotesTopButton = ({selectedTag}) => {
             Formulas
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleTagPress('Free')}>
+        <TouchableOpacity onPress={() => handleTagPress('FreeNotes')}>
           <Text
             style={[
               styles.text,
-              pressed === 'Free' && styles.selectedText,
+              pressed === 'FreeNotes' && styles.selectedText,
               {width: getTextWidth('Free Notes')},
             ]}>
             Free Notes

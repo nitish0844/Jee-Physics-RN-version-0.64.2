@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import React, {useState} from 'react';
 
-const Purchased = ({userData, handleRefresh}) => {
+const Purchased = ({userData, handleRefresh, selectedTag, searchText}) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
@@ -12,47 +12,42 @@ const Purchased = ({userData, handleRefresh}) => {
     }, 1000);
   };
 
-  // return (
-  //   <ScrollView
-  //     contentContainerStyle={styles.scrollViewContainer}
-  //     refreshControl={
-  //       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-  //     }>
-  //     <View style={styles.purchasedContainer}>
-  //       {userData &&
-  //         Object.keys(userData).map(category => {
-  //           const categoryData = userData[category];
-  //           return (
-  //             <View key={category} style={styles.categoryContainer}>
-  //               <Text style={styles.categoryTitle}>{category}</Text>
-  //               {Object.keys(categoryData).map(
-  //                 courseName =>
-  //                   // Check if the course value is true before rendering
-  //                   categoryData[courseName] === true && (
-  //                     <View key={courseName} style={styles.courseCard}>
-  //                       <Text style={styles.courseName}>{courseName}</Text>
-  //                     </View>
-  //                   ),
-  //               )}
-  //             </View>
-  //           );
-  //         })}
-  //     </View>
-  //   </ScrollView>
-  // );
+  const filteredUserData = userData
+    ? Object.keys(userData).reduce((filteredData, category) => {
+        const filteredCourses = Object.keys(userData[category]).filter(
+          courseName =>
+            (searchText === '0' ||
+              !searchText ||
+              courseName.includes(searchText)) &&
+            (selectedTag === 'All' || selectedTag === category),
+        );
+
+        filteredData[category] = {}; // Initialize an empty object for the category
+
+        if (filteredCourses.length > 0) {
+          filteredCourses.forEach(courseName => {
+            filteredData[category][courseName] = userData[category][courseName];
+          });
+        }
+
+        return filteredData;
+      }, {})
+    : {};
+
+  console.log('Search Text:', searchText); // Check if searchText is being cleared
+  console.log('Filtered UserData:', filteredUserData); // Check the filtered data
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollViewContainer}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      <View style={styles.purchasedContainer}>
-        {userData &&
-          Object.keys(userData).map(category => {
-            const categoryData = userData[category];
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollViewContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <View style={styles.purchasedContainer}>
+          {Object.keys(filteredUserData).map(category => {
+            const categoryData = filteredUserData[category];
 
-            // Check if there is at least one course with true value in this category
             const hasTrueCourse = Object.values(categoryData).some(
               value => value === true,
             );
@@ -73,16 +68,21 @@ const Purchased = ({userData, handleRefresh}) => {
               );
             }
 
-            return null; // Skip rendering this category container
+            return null;
           })}
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 export default Purchased;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: '25%',
+  },
   scrollViewContainer: {
     flexGrow: 1,
   },

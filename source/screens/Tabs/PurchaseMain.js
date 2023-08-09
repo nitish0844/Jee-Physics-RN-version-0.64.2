@@ -26,11 +26,15 @@ const PurchaseMain = ({route}) => {
   const [loading, setLoading] = useState(true); // Add loading state
   const [spinning, setSpinning] = useState(false);
 
+  const [search, setSearch] = useState('');
+
   const selectedTag = route.params && route.params.selectedTag;
 
   const changeText = text => {
     if (text.length > 0) {
+      // console.log('Text:', text);
       setSpinning(true);
+      setSearch(text);
     } else {
       setSpinning(false);
     }
@@ -150,10 +154,15 @@ const PurchaseMain = ({route}) => {
       {loading ? (
         <ActivityIndicator style={styles.loader} size="large" color="#000" />
       ) : purchased ? (
-        selectedTag === 'All' && (
-          <Purchased userData={userData} handleRefresh={handleRefresh} />
-        )
+        // selectedTag === 'All' && (
+        <Purchased
+          userData={userData}
+          handleRefresh={handleRefresh}
+          selectedTag={selectedTag}
+          searchText={search}
+        />
       ) : (
+        // )
         <NotPurchased />
       )}
     </SafeAreaView>
