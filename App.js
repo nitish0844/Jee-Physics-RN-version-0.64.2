@@ -10,7 +10,7 @@ import NoInternet from './source/screens/NoInternet.js';
 import LottieView from 'lottie-react-native';
 
 import messaging from '@react-native-firebase/messaging';
-import {Platform, View} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 
 import Slide from './source/screens/Slider/Slide.js';
 import Signup from './source/screens/Login and Signup screen/SignUp.js';
@@ -29,6 +29,7 @@ import PushNotification, {Importance} from 'react-native-push-notification';
 import Payment from './source/components/Payment/Payment.js';
 // import Loader from './source/components/Loader/Loader.js';
 import SplashScreen from './source/screens/SplashScreen/SplashScreen.js';
+import LiveStream from './source/components/LiveStream/LiveStream.js';
 
 import Loader from './source/screens/Loader/Loader.js';
 import SearchComponent from './source/components/SearchBar function/SearchPage.js';
@@ -175,6 +176,11 @@ const RootNavigator = () => {
               iconComponent = (
                 <Feather name={iconName} size={25} color={color} />
               );
+            } else if (route.name === 'LiveStream') {
+              iconName = 'play';
+              iconComponent = (
+                <Feather name={iconName} size={25} color={color} />
+              );
             }
             return iconComponent;
           },
@@ -194,6 +200,36 @@ const RootNavigator = () => {
           options={{
             headerShown: false,
             tabBarLabel: 'Notes',
+            tabBarHideOnKeyboard: true,
+          }}
+        />
+
+        {/* <Tab.Screen
+          name="LiveStream"
+          component={LiveStreamSetting}
+          options={{
+            headerShown: false,
+            tabBarLabel: 'Videos',
+            tabBarHideOnKeyboard: true,
+          }}
+        /> */}
+
+        <Tab.Screen
+          name="LiveStream"
+          component={LiveStream}
+          options={{
+            tabBarIcon: ({focused, color, size}) => {
+              return (
+                <LiveStreamButton
+                  focused={focused}
+                  color={color}
+                  size={size}
+                  navigation={navigation}
+                />
+              );
+            },
+            headerShown: false,
+            tabBarLabel: 'LiveStream',
             tabBarHideOnKeyboard: true,
           }}
         />
@@ -257,6 +293,24 @@ const RootNavigator = () => {
   );
 };
 
+const LiveStreamButton = ({focused, color, size, navigation}) => {
+  return (
+    <TouchableOpacity
+      style={[
+        styles.liveStreamButton,
+        {backgroundColor: focused ? '#17A1FA' : '#fff'},
+      ]}
+      onPress={() => navigation.navigate('LiveStream')}>
+      <Feather
+        name="play"
+        size={40} // Adjust the size as needed
+        color={focused ? '#fff' : color}
+        style={styles.iconStyle}
+      />
+    </TouchableOpacity>
+  );
+};
+
 const App = () => {
   const [connected, setConnected] = useState(false);
   // const [loading, setLoading] = useState(true); // Add a loading state
@@ -301,3 +355,22 @@ const App = () => {
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  liveStreamButton: {
+    width: 70, // Adjust the width as needed
+    height: 70, // Adjust the height as needed
+    borderRadius: 35, // Makes it round
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    elevation: 5, // Add shadow for visual depth
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 3,
+    // zIndex: 99,
+  },
+  iconStyle: {
+    marginLeft: 8, // Adjust this to center the icon
+  },
+});

@@ -22,6 +22,11 @@ import android.net.Uri;
 import android.content.ContentResolver;
 import androidx.core.app.NotificationCompat;
 
+// Video Call Settings
+import live.videosdk.rnfgservice.ForegroundServicePackage;
+import live.videosdk.rnincallmanager.InCallManagerPackage;
+import live.videosdk.rnwebrtc.WebRTCModulePackage;
+
 
 
 
@@ -41,6 +46,10 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           new RazorpayPackage();
+
+          packages.add(new ForegroundServicePackage());
+          packages.add(new InCallManagerPackage());
+          packages.add(new WebRTCModulePackage());
           return packages;
         }
 

@@ -208,6 +208,9 @@ dependencies {
     compile project(':react-native-image-crop-picker')
     implementation project(':react-native-razorpay')
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation project(':rnfgservice')
+    implementation project(':rnwebrtc')
+    implementation project(':rnincallmanager')
     
     
 
