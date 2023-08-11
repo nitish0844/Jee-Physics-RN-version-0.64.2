@@ -1,7 +1,6 @@
 import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import RazorpayCheckout from 'react-native-razorpay';
-import CombinedUnitandFormula from '../HomeTab/CombinedUnitandFormula';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -46,18 +45,11 @@ const Payment = ({route, navigation}) => {
       textBody: 'All the best',
       button: 'close',
       onPress: () => {
-        // Navigate back to CombinedUnitandFormula.js
-        // if (sourceScreen === 'BottomTabs') {
         navigation.replace('PdfViewer');
-        // }
       },
 
       onHide: () => {
-        // Navigate back to CombinedUnitandFormula.js
-        // if (sourceScreen === 'BottomTabs') {
-        // navigation.navigate('BottomTabs');
         navigation.replace('PdfViewer');
-        // }
       },
     });
   };
@@ -79,22 +71,19 @@ const Payment = ({route, navigation}) => {
         // Payment successful
         console.log('Payment success:', razorpayResponse);
 
-        // Update Firestore Boolean as true for the purchased course
         const currentUser = auth().currentUser;
         if (currentUser) {
-          // const courseName = '11th all units + formulas'; // Replace with the actual course name
+          const userPaidNotesRef = firestore()
+            .collection('UserPaidNotes')
+            .doc(currentUser.email);
 
           // Check if the user's document exists in the 'UserPaidNotes' collection
-          firestore()
-            .collection('UserPaidNotes')
-            .doc(currentUser.email)
+          userPaidNotesRef
             .get()
             .then(doc => {
               if (doc.exists) {
-                // The user's document exists, update the field for the purchased course
-                firestore()
-                  .collection('UserPaidNotes')
-                  .doc(currentUser.email)
+                // Update the field for the purchased course within the subcollection
+                userPaidNotesRef
                   .collection(CollectionandDoc)
                   .doc(CollectionandDoc)
                   .update({[courseName]: true})
@@ -105,15 +94,11 @@ const Payment = ({route, navigation}) => {
                     console.log('Firestore update error:', error);
                   });
               } else {
-                // The user's document doesn't exist, create it and set the field for the purchased course
-                firestore()
-                  .collection('UserPaidNotes')
-                  .doc(currentUser.email)
+                // The user's document doesn't exist, create it and set the course as true
+                userPaidNotesRef
                   .set({})
                   .then(() => {
-                    firestore()
-                      .collection('UserPaidNotes')
-                      .doc(currentUser.email)
+                    userPaidNotesRef
                       .collection(CollectionandDoc)
                       .doc(CollectionandDoc)
                       .set({[courseName]: true})

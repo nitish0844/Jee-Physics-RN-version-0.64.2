@@ -303,7 +303,7 @@ const LiveStreamButton = ({focused, color, size, navigation}) => {
       onPress={() => navigation.navigate('LiveStream')}>
       <Feather
         name="play"
-        size={40} // Adjust the size as needed
+        size={30} // Adjust the size as needed
         color={focused ? '#fff' : color}
         style={styles.iconStyle}
       />
@@ -313,7 +313,6 @@ const LiveStreamButton = ({focused, color, size, navigation}) => {
 
 const App = () => {
   const [connected, setConnected] = useState(false);
-  // const [loading, setLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -321,23 +320,10 @@ const App = () => {
       setConnected(state.isConnected);
     });
 
-    // Simulate fetching data from the internet
-    // setTimeout(() => {
-    //   setLoading(false); // Once data is fetched, set loading to false
-    // }, 3000); // Adjust the delay as needed
-
     return () => {
       unsubscribe(); // Cleanup the event listener when the component unmounts
     };
   }, []); // Remove 'loading' from the dependency array to avoid infinite loop
-
-  // if (loading) {
-  //   // Show a loader until the data is fetched
-
-  //   return <SplashScreen />;
-  // }
-
-  // CrispChat.initialize({websiteId: 'a8fcd120-1b98-4e79-90b7-cc02a26163a1'});
 
   return (
     <>
@@ -358,8 +344,8 @@ export default App;
 
 const styles = StyleSheet.create({
   liveStreamButton: {
-    width: 70, // Adjust the width as needed
-    height: 70, // Adjust the height as needed
+    width: 60, // Adjust the width as needed
+    height: 60, // Adjust the height as needed
     borderRadius: 35, // Makes it round
     justifyContent: 'center',
     alignItems: 'center',
