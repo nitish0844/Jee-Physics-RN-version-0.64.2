@@ -41,33 +41,15 @@ const CombinedUnitandFormula = () => {
     }
   };
 
-  const OneButtonFunction = () => {
-    if (userData && userData['11th all units + formulas']) {
-      navigation.navigate('PdfViewer');
-    } else {
-      // navigation.navigate('Payment');
-      const courseName = '11th all units + formulas'; // Replace with the actual course name
-      const amount = 100000; // Replace with the actual payment amount for this course
-      const BackScreen = 'BottomTabs';
-      const CollectionandDoc = 'Formulas';
-      navigation.navigate('Payment', {
-        courseName,
-        amount,
-        BackScreen,
-        CollectionandDoc,
-      });
-    }
-  };
+  const handleButtonPress = course => {
+    const amount = 100000; // Replace with the actual payment amount for this course
+    const BackScreen = 'BottomTabs';
+    const CollectionandDoc = 'Formulas';
+    const courseName = course;
 
-  const TwoButtonFunction = () => {
-    if (userData && userData['12th all units + formulas']) {
+    if (userData && userData[course]) {
       navigation.navigate('PdfViewer');
     } else {
-      // navigation.navigate('Payment');
-      const courseName = '12th all units + formulas'; // Replace with the actual course name
-      const amount = 100000; // Replace with the actual payment amount for this course
-      const BackScreen = 'BottomTabs';
-      const CollectionandDoc = 'Formulas';
       navigation.navigate('Payment', {
         courseName,
         amount,
@@ -103,7 +85,8 @@ const CombinedUnitandFormula = () => {
           <Text style={styles.text1}>11th all units + formulas</Text>
           <Text style={styles.text2}>10 units + Formulas</Text>
           <Text style={styles.text3}>Handwritten notes</Text>
-          <TouchableOpacity onPress={OneButtonFunction}>
+          <TouchableOpacity
+            onPress={() => handleButtonPress('11th all units + formulas')}>
             <View style={styles.iconContainer}>
               <AntDesign
                 name="rightcircle"
@@ -121,7 +104,8 @@ const CombinedUnitandFormula = () => {
           <Text style={styles.text1}>12th all units + formulas</Text>
           <Text style={styles.text2}>10 units + Formulas</Text>
           <Text style={styles.text3}>Handwritten notes</Text>
-          <TouchableOpacity onPress={TwoButtonFunction}>
+          <TouchableOpacity
+            onPress={() => handleButtonPress('12th all units + formulas')}>
             <AntDesign
               name="rightcircle"
               size={30}

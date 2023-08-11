@@ -155,7 +155,7 @@ const Payment = ({route, navigation}) => {
       email: 'user@example.com', // User's email
       contact: '1234567890', // User's phone number
     },
-    theme: {color: '#F37254'}, // Theme color
+    theme: {color: '#92ff33'}, // Theme color
   };
 
   return (

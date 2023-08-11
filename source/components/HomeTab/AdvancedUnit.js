@@ -38,29 +38,6 @@ const AdvancedUnit = () => {
 
   console.log(userData);
 
-  // const BoughtCourse = async () => {
-  //   try {
-  //     const currentUser = auth().currentUser;
-
-  //     const userDocRef = firestore()
-  //       .collection('UserPaidNotes')
-  //       .doc(currentUser.email)
-  //       .collection('Advance Units')
-  //       .doc('Advance Units');
-
-  //     const userDocSnapshot = await userDocRef.get();
-
-  //     if (userDocSnapshot.exists) {
-  //       const userData = userDocSnapshot.data();
-  //       setUserData(userData);
-  //     } else {
-  //       setUserData(null); // Set user data to null if document doesn't exist
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const handleButtonPress = course => {
     const amount = 100000; // Replace with the actual payment amount for this course
     const BackScreen = 'BottomTabs';
