@@ -165,6 +165,7 @@ function ParticipantList({participants}) {
       renderItem={({item}) => {
         return <ParticipantView participantId={item} />;
       }}
+      keyExtractor={item => item.toString()} // Specify a keyExtractor
     />
   ) : (
     <View
@@ -209,15 +210,56 @@ function MeetingView() {
 }
 
 export default function LiveStream() {
+  //   const [meetingId, setMeetingId] = useState(null);
+
+  //   const getMeetingId = async id => {
+  //     if (!token) {
+  //       console.log('PLEASE PROVIDE TOKEN IN api.js FROM app.videosdk.live');
+  //     }
+  //     const meetingId = id == null ? await LiveStreamSetting({token}) : id;
+  //     setMeetingId(meetingId);
+  //   };
+
+  //   return meetingId ? (
+  //     <SafeAreaView style={{flex: 1, backgroundColor: '#F6F6FF'}}>
+  //       <MeetingProvider
+  //         config={{
+  //           meetingId,
+  //           micEnabled: false,
+  //           webcamEnabled: true,
+  //           name: 'Cooper',
+  //           cameraType: 'front',
+  //         }}
+  //         token={token}>
+  //         <MeetingView />
+  //       </MeetingProvider>
+  //     </SafeAreaView>
+  //   ) : (
+  //     <JoinScreen
+  //       getMeetingId={() => {
+  //         getMeetingId();
+  //       }}
+  //     />
+  //   );
+  // }
+
   const [meetingId, setMeetingId] = useState(null);
 
   const getMeetingId = async id => {
     if (!token) {
       console.log('PLEASE PROVIDE TOKEN IN api.js FROM app.videosdk.live');
     }
+
+    console.log('getMeetingId called with id:', id);
+
     const meetingId = id == null ? await LiveStreamSetting({token}) : id;
+
+    console.log('Setting meetingId:', meetingId);
+
     setMeetingId(meetingId);
   };
+
+  console.log('meetingId:', meetingId);
 
   return meetingId ? (
     <SafeAreaView style={{flex: 1, backgroundColor: '#F6F6FF'}}>
@@ -227,7 +269,7 @@ export default function LiveStream() {
           micEnabled: false,
           webcamEnabled: true,
           name: 'Cooper',
-          //   cameraType: 'front',
+          cameraType: 'front',
         }}
         token={token}>
         <MeetingView />
@@ -235,8 +277,10 @@ export default function LiveStream() {
     </SafeAreaView>
   ) : (
     <JoinScreen
-      getMeetingId={() => {
-        getMeetingId();
+      getMeetingId={val => {
+        // Pass the parameter to the function
+        console.log('Calling getMeetingId from JoinScreen');
+        getMeetingId(val); // Pass the value received from JoinScreen
       }}
     />
   );
