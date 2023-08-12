@@ -4,8 +4,16 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Iconic from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
 
 const SupportButton = () => {
+  const navigation = useNavigation();
+  const onButtonPress = () => {
+    navigation.navigate('ChatCrips', {
+      uri: 'https://go.crisp.chat/chat/embed/?website_id=a8fcd120-1b98-4e79-90b7-cc02a26163a1',
+    });
+  };
+
   return (
     <View style={styles.Container}>
       <MaterialCommunityIcons
@@ -16,7 +24,7 @@ const SupportButton = () => {
       <View style={{marginLeft: 10, flex: 1}}>
         <Text style={styles.text}>Support</Text>
       </View>
-      <TouchableOpacity style={styles.next}>
+      <TouchableOpacity style={styles.next} onPress={onButtonPress}>
         <Entypo
           name="chevron-small-right"
           size={30}
@@ -78,10 +86,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
     paddingRight: 20,
+    right: 20,
   },
   nextIcon: {
     alignSelf: 'flex-end',
-    right: 20,
   },
   Title: {
     left: 30,

@@ -1,10 +1,45 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import React from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, Button} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import VersionCheck from 'react-native-version-check';
+import Modal from 'react-native-modal';
 
 const Version = () => {
+  const [version, getVersion] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const fetchVersion = async () => {
+    try {
+      const currentVersion = await VersionCheck.getCurrentVersion();
+      getVersion(currentVersion);
+    } catch (error) {
+      console.error('Error fetching version:', error);
+    }
+  };
+
+  fetchVersion();
+
+  const WrapperComponent = () => {
+    return (
+      <View style={styles.modalContainer}>
+        <Modal
+          isVisible={true}
+          style={styles.modal}
+          onBackdropPress={toggleModal}>
+          <View style={styles.modalContent}>
+            <Text>Version: {version}</Text>
+            {/* <Button title="Hide modal" onPress={toggleModal} /> */}
+          </View>
+        </Modal>
+      </View>
+    );
+  };
+
   return (
     <View style={{marginTop: 20}}>
       <Text style={styles.Title}>VERSIONS</Text>
@@ -14,7 +49,7 @@ const Version = () => {
           <View style={{marginLeft: 10, flex: 1}}>
             <Text style={styles.text}>App version</Text>
           </View>
-          <TouchableOpacity style={styles.next}>
+          <TouchableOpacity style={styles.next} onPress={toggleModal}>
             <Entypo
               name="chevron-small-right"
               size={30}
@@ -23,6 +58,7 @@ const Version = () => {
             />
           </TouchableOpacity>
         </View>
+        {isModalVisible && <WrapperComponent />}
       </View>
     </View>
   );
@@ -47,14 +83,33 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
     paddingRight: 20,
+    right: 20,
   },
   nextIcon: {
     alignSelf: 'flex-end',
-    right: 20,
   },
   Title: {
     left: 30,
     color: '#454545',
     fontWeight: '500',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '50%', // Set the width to 100% to match the modal width
+    height: '20%',
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

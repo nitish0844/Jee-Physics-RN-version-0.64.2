@@ -1,5 +1,6 @@
 import {View, Text, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import React, {useState} from 'react';
+import Free from '../NotesTab/Free';
 
 const Purchased = ({userData, handleRefresh, selectedTag, searchText}) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -39,39 +40,49 @@ const Purchased = ({userData, handleRefresh, selectedTag, searchText}) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollViewContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <View style={styles.purchasedContainer}>
-          {Object.keys(filteredUserData).map(category => {
-            const categoryData = filteredUserData[category];
+      {selectedTag === 'FreeNotes' ? ( // Check if selectedTag is "Free"
+        <ScrollView // Wrap the Free component with ScrollView
+          contentContainerStyle={[styles.scrollViewContainer]}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+          <Free />
+        </ScrollView>
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.scrollViewContainer}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+          <View style={styles.purchasedContainer}>
+            {Object.keys(filteredUserData).map(category => {
+              const categoryData = filteredUserData[category];
 
-            const hasTrueCourse = Object.values(categoryData).some(
-              value => value === true,
-            );
-
-            if (hasTrueCourse) {
-              return (
-                <View key={category} style={styles.categoryContainer}>
-                  <Text style={styles.categoryTitle}>{category}</Text>
-                  {Object.keys(categoryData).map(
-                    courseName =>
-                      categoryData[courseName] === true && (
-                        <View key={courseName} style={styles.courseCard}>
-                          <Text style={styles.courseName}>{courseName}</Text>
-                        </View>
-                      ),
-                  )}
-                </View>
+              const hasTrueCourse = Object.values(categoryData).some(
+                value => value === true,
               );
-            }
 
-            return null;
-          })}
-        </View>
-      </ScrollView>
+              if (hasTrueCourse) {
+                return (
+                  <View key={category} style={styles.categoryContainer}>
+                    <Text style={styles.categoryTitle}>{category}</Text>
+                    {Object.keys(categoryData).map(
+                      courseName =>
+                        categoryData[courseName] === true && (
+                          <View key={courseName} style={styles.courseCard}>
+                            <Text style={styles.courseName}>{courseName}</Text>
+                          </View>
+                        ),
+                    )}
+                  </View>
+                );
+              }
+
+              return null;
+            })}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };

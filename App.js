@@ -10,7 +10,7 @@ import NoInternet from './source/screens/NoInternet.js';
 import LottieView from 'lottie-react-native';
 
 import messaging from '@react-native-firebase/messaging';
-import {TouchableOpacity, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import Slide from './source/screens/Slider/Slide.js';
 import Signup from './source/screens/Login and Signup screen/SignUp.js';
@@ -214,7 +214,7 @@ const RootNavigator = () => {
           }}
         /> */}
 
-        <Tab.Screen
+        {/* <Tab.Screen
           name="LiveStream"
           component={LiveStream}
           options={{
@@ -232,7 +232,7 @@ const RootNavigator = () => {
             tabBarLabel: 'LiveStream',
             tabBarHideOnKeyboard: true,
           }}
-        />
+        /> */}
         <Tab.Screen
           name="PurchaseMain"
           component={PurchaseMain}
@@ -293,23 +293,23 @@ const RootNavigator = () => {
   );
 };
 
-const LiveStreamButton = ({focused, color, size, navigation}) => {
-  return (
-    <TouchableOpacity
-      style={[
-        styles.liveStreamButton,
-        {backgroundColor: focused ? '#17A1FA' : '#fff'},
-      ]}
-      onPress={() => navigation.navigate('LiveStream')}>
-      <Feather
-        name="play"
-        size={30} // Adjust the size as needed
-        color={focused ? '#fff' : color}
-        style={styles.iconStyle}
-      />
-    </TouchableOpacity>
-  );
-};
+// const LiveStreamButton = ({focused, color, size, navigation}) => {
+//   return (
+//     <TouchableOpacity
+//       style={[
+//         styles.liveStreamButton,
+//         {backgroundColor: focused ? '#17A1FA' : '#fff'},
+//       ]}
+//       onPress={() => navigation.navigate('LiveStream')}>
+//       <Feather
+//         name="play"
+//         size={30} // Adjust the size as needed
+//         color={focused ? '#fff' : color}
+//         style={styles.iconStyle}
+//       />
+//     </TouchableOpacity>
+//   );
+// };
 
 const App = () => {
   const [connected, setConnected] = useState(false);

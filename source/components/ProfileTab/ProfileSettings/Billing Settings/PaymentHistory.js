@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20, // Add some spacing between the containers
+    // gap: 5,
     left: 10,
   },
   text: {
@@ -46,10 +47,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
     paddingRight: 20,
+    right: 20,
   },
   nextIcon: {
     alignSelf: 'flex-end',
-    right: 20,
   },
   Title: {
     left: 30,
