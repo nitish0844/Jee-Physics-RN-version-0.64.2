@@ -87,20 +87,18 @@ const AdvancedUnit = () => {
           <Text style={styles.CardTitle}>Kinetics</Text>
           <Text style={styles.CardDescription}>12 Chapters</Text>
           <TouchableOpacity
+            style={styles.icon}
             onPress={() => handleButtonPress('Kirchhoff’s law')}>
-            <AntDesign
-              name="rightcircle"
-              size={30}
-              color={'#000'}
-              style={styles.icon}
-            />
+            <AntDesign name="rightcircle" size={30} color={'#000'} />
           </TouchableOpacity>
         </View>
         <View style={styles.card1}>
           <Image source={{uri: uri}} style={styles.image} />
           <Text style={styles.CardTitle}>Laws of motion</Text>
           <Text style={styles.CardDescription}>12 Chapters</Text>
-          <TouchableOpacity onPress={() => handleButtonPress('Law of Motion')}>
+          <TouchableOpacity
+            style={styles.icon}
+            onPress={() => handleButtonPress('Law of Motion')}>
             <AntDesign
               name="rightcircle"
               size={30}
@@ -152,7 +150,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignSelf: 'flex-end',
-    right: 7,
+    right: 5,
+    bottom: 2,
   },
   CardDescription: {
     color: '#7E7E7E',

@@ -115,45 +115,49 @@ const MainPage = () => {
     <AlertNotificationRoot>
       <SafeAreaView style={styles.container}>
         <ScrollView style={{flex: 1}}>
-          <View style={styles.topContainer}>
-            <View style={styles.headContainer}>
-              <Text style={styles.Name}>
-                Hi, {userData && userData.name ? userData.name : ''} 😊
-              </Text>
-              <Text style={styles.title}>Aim higher than you ever imagine</Text>
+          <View style={styles.contentContainer}>
+            <View style={styles.topContainer}>
+              <View style={styles.headContainer}>
+                <Text style={styles.Name}>
+                  Hi, {userData && userData.name ? userData.name : ''} 😊
+                </Text>
+                <Text style={styles.title}>
+                  Aim higher than you ever imagine
+                </Text>
+              </View>
+              <SearchBar
+                style={styles.SearchBar}
+                placeholder="Search here"
+                onPress={() => Navigation.navigate('SearchPage')}
+                onChangeText={text => console.log(text)}
+                editable={false}
+                clearIconComponent
+                textInputStyle={{opacity: 0.3}}
+              />
             </View>
-            <SearchBar
-              style={styles.SearchBar}
-              placeholder="Search here"
-              onPress={() => Navigation.navigate('SearchPage')}
-              onChangeText={text => console.log(text)}
-              editable={false}
-              clearIconComponent
-              textInputStyle={{opacity: 0.3}}
-            />
+            <View>
+              <Carousel
+                ref={carouselRef}
+                // layoutCardOffset={true}
+                // sliderWidth={screenWidth}
+                sliderWidth={screenWidth + 50}
+                sliderHeight={screenWidth}
+                itemWidth={screenWidth - 10}
+                data={data}
+                renderItem={CarouselCardItem}
+                hasParallaxImages={true}
+                autoplay={true}
+                loop={true}
+                autoplayDelay={3000}
+              />
+            </View>
+            <View id="Popular Notes">
+              <PopularNotes />
+            </View>
+            <AdvancedUnit />
+            <PhysicsFormula />
+            <CombinedUnitandFormula />
           </View>
-          <View>
-            {/* <Carousel
-              ref={carouselRef}
-              // layoutCardOffset={true}
-              // sliderWidth={screenWidth}
-              sliderWidth={screenWidth + 50}
-              sliderHeight={screenWidth}
-              itemWidth={screenWidth - 10}
-              data={data}
-              renderItem={CarouselCardItem}
-              hasParallaxImages={true}
-              autoplay={true}
-              loop={true}
-              autoplayDelay={3000}
-            /> */}
-          </View>
-          <View id="Popular Notes">
-            <PopularNotes />
-          </View>
-          <AdvancedUnit />
-          <PhysicsFormula />
-          <CombinedUnitandFormula />
         </ScrollView>
         <FloatingButton />
       </SafeAreaView>
@@ -174,6 +178,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#d0eff5',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+  },
+  contentContainer: {
+    paddingBottom: 50, // Adjust the padding as needed
   },
   Name: {
     color: '#000',

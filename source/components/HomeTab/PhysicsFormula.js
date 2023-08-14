@@ -31,12 +31,12 @@ const PhysicsFormula = () => {
           <Image source={{uri: uri}} style={styles.image} />
           <Text style={styles.CardTitle}>11th all formulas</Text>
           <Text style={styles.CardDescription}>all units formula</Text>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.icon}>
             <AntDesign
               name="rightcircle"
               size={30}
               color={'#000'}
-              style={styles.icon}
+              // style={styles.icon}
             />
           </TouchableOpacity>
         </View>
@@ -44,12 +44,12 @@ const PhysicsFormula = () => {
           <Image source={{uri: uri}} style={styles.image} />
           <Text style={styles.CardTitle}>12th all formulas</Text>
           <Text style={styles.CardDescription}>all units formula</Text>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.icon}>
             <AntDesign
               name="rightcircle"
               size={30}
               color={'#000'}
-              style={styles.icon}
+              // style={styles.icon}
             />
           </TouchableOpacity>
         </View>

@@ -86,13 +86,14 @@ const CombinedUnitandFormula = () => {
           <Text style={styles.text2}>10 units + Formulas</Text>
           <Text style={styles.text3}>Handwritten notes</Text>
           <TouchableOpacity
+            style={styles.icontouch}
             onPress={() => handleButtonPress('11th all units + formulas')}>
             <View style={styles.iconContainer}>
               <AntDesign
                 name="rightcircle"
                 size={30}
                 color={'#000'}
-                style={styles.icon}
+                // style={styles.icon}
               />
             </View>
           </TouchableOpacity>
@@ -105,12 +106,13 @@ const CombinedUnitandFormula = () => {
           <Text style={styles.text2}>10 units + Formulas</Text>
           <Text style={styles.text3}>Handwritten notes</Text>
           <TouchableOpacity
+            style={styles.icontouch}
             onPress={() => handleButtonPress('12th all units + formulas')}>
             <AntDesign
               name="rightcircle"
               size={30}
               color={'#000'}
-              style={styles.icon}
+              // style={styles.icon}
             />
           </TouchableOpacity>
         </View>
@@ -170,9 +172,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignSelf: 'flex-end',
-    left: 30,
-    paddingBottom: 50,
-    bottom: 10,
+    // left: 30,
+    // paddingBottom: 50,
+    // bottom: 10,
   },
   viewAllButton: {
     position: 'absolute',
@@ -185,5 +187,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingRight: 10,
     // marginRight: 250,
+  },
+  icontouch: {
+    alignSelf: 'flex-end',
+    left: 30,
+    paddingBottom: 50,
+    bottom: 10,
   },
 });
