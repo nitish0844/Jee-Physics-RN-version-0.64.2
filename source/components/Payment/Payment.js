@@ -85,31 +85,76 @@ const Payment = ({route, navigation}) => {
               .doc(currentUser.email)
               .collection('Payment'); // Reference to the 'payment' subcollection
 
-            // Fetch the existing subdocuments to determine the next subdocument name
-            userPaymentHistoryRef
-              .get()
-              .then(querySnapshot => {
-                const paymentCount = querySnapshot.size;
-                const subDocName = `payment${paymentCount + 1}`;
+            const userPaymentDocRef = firestore()
+              .collection('PaymentHistory')
+              .doc(currentUser.email);
 
-                userPaymentHistoryRef
-                  .doc(subDocName)
-                  .set({
-                    date: new Date().toISOString().slice(0, 10),
-                    time: new Date().toLocaleTimeString(),
-                    amount: amount,
-                    course: courseName,
-                    paymentId: razorpayResponse.razorpay_payment_id,
-                  })
-                  .then(() => {
-                    console.log('Payment details stored in Firestore');
-                  })
-                  .catch(error => {
-                    console.log('Error storing payment details:', error);
-                  });
+            // Calculate the amount in paisa (remove the last two digits)
+            const amountInPaisa = Math.floor(amount / 100);
+
+            // Check if the user's email doc exists in the 'PaymentHistory' collection
+            userPaymentDocRef
+              .get()
+              .then(doc => {
+                if (doc.exists) {
+                  // Email doc exists, create the subdocument in the 'payment' subcollection
+                  userPaymentHistoryRef
+                    .get()
+                    .then(querySnapshot => {
+                      const paymentCount = querySnapshot.size;
+                      const subDocName = `payment${paymentCount + 1}`;
+
+                      userPaymentHistoryRef
+                        .doc(subDocName)
+                        .set({
+                          date: new Date().toISOString().slice(0, 10),
+                          time: new Date().toLocaleTimeString(),
+                          amount: amountInPaisa,
+                          course: courseName,
+                          paymentId: razorpayResponse.razorpay_payment_id,
+                        })
+                        .then(() => {
+                          console.log('Payment details stored in Firestore');
+                        })
+                        .catch(error => {
+                          console.log('Error storing payment details:', error);
+                        });
+                    })
+                    .catch(error => {
+                      console.log('Error fetching payment history:', error);
+                    });
+                } else {
+                  // Email doc doesn't exist, create it first
+                  userPaymentDocRef
+                    .set({})
+                    .then(() => {
+                      console.log(
+                        'Email document created in PaymentHistory collection',
+                      );
+                      // Now create the subdocument in the 'payment' subcollection
+                      userPaymentHistoryRef
+                        .doc('payment1') // Assuming 'payment1' is the initial subdoc name
+                        .set({
+                          date: new Date().toISOString().slice(0, 10),
+                          time: new Date().toLocaleTimeString(),
+                          amount: amountInPaisa,
+                          course: courseName,
+                          paymentId: razorpayResponse.razorpay_payment_id,
+                        })
+                        .then(() => {
+                          console.log('Payment details stored in Firestore');
+                        })
+                        .catch(error => {
+                          console.log('Error storing payment details:', error);
+                        });
+                    })
+                    .catch(error => {
+                      console.log('Error creating email document:', error);
+                    });
+                }
               })
               .catch(error => {
-                console.log('Error fetching payment history:', error);
+                console.log('Error checking email document:', error);
               });
           }
 
@@ -122,7 +167,7 @@ const Payment = ({route, navigation}) => {
                 userPaidNotesRef
                   .collection(CollectionandDoc)
                   .doc(CollectionandDoc)
-                  .update({[courseName]: true})
+                  .set({[courseName]: true}, {merge: true}) // Merge to avoid overwriting other fields
                   .then(() => {
                     console.log('Firestore update success');
                   })

@@ -157,7 +157,7 @@ const Login = () => {
         email,
         password,
       );
-      console.log('User logged in successfully:', userCredential.user);
+      // console.log('User logged in successfully:', userCredential.user);
       // showVerificationSuccessfulDialog();
     } catch (error) {
       EmailLoginError();

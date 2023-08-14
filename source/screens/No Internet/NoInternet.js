@@ -3,11 +3,12 @@ import React from 'react';
 import LottieView from 'lottie-react-native';
 
 const {width, height} = Dimensions.get('window');
-const Loader = () => {
+
+const NoInternet = () => {
   return (
     <View style={styles.container}>
       <LottieView
-        source={require('./Loading.json')}
+        source={require('./No Internet.json')}
         autoPlay
         loop
         style={styles.animation}
@@ -16,7 +17,7 @@ const Loader = () => {
   );
 };
 
-export default Loader;
+export default NoInternet;
 
 const styles = StyleSheet.create({
   container: {

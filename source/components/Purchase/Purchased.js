@@ -35,8 +35,8 @@ const Purchased = ({userData, handleRefresh, selectedTag, searchText}) => {
       }, {})
     : {};
 
-  console.log('Search Text:', searchText); // Check if searchText is being cleared
-  console.log('Filtered UserData:', filteredUserData); // Check the filtered data
+  // console.log('Search Text:', searchText); // Check if searchText is being cleared
+  // console.log('Filtered UserData:', filteredUserData); // Check the filtered data
 
   return (
     <View style={styles.container}>

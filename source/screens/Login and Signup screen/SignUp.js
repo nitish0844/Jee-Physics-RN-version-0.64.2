@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //   statusCodes,
 // } from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
-import NoInternet from '../NoInternet';
+import NoInternet from '../No Internet/NoInternet';
 import {useRef} from 'react';
 import {LogBox} from 'react-native';
 import {emailSuccessalert} from '../../components/Error and Success Modal/ErrorAndSuccessModal';

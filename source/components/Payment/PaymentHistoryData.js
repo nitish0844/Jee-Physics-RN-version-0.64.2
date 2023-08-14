@@ -51,6 +51,7 @@ const PaymentHistoryData = () => {
           <View style={styles.card}>
             <Text style={styles.courseText}>Course: {item.course}</Text>
             <Text style={{color: '#fff'}}>Date: {item.date}</Text>
+            <Text style={{color: '#fff'}}>Amount: {item.amount}</Text>
             <Text style={{color: '#fff'}}>Payment ID: {item.paymentId}</Text>
           </View>
         )}

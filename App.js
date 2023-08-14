@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Feather from 'react-native-vector-icons/Feather.js';
 import NetInfo from '@react-native-community/netinfo';
 // import dynamicLinks from '@react-native-firebase/dynamic-links';
-import NoInternet from './source/screens/NoInternet.js';
+import NoInternet from './source/screens/No Internet/NoInternet.js';
 import LottieView from 'lottie-react-native';
 
 import messaging from '@react-native-firebase/messaging';
@@ -82,9 +82,9 @@ const RootNavigator = () => {
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      if (enabled) {
-        console.log('Authorization status:', authStatus);
-      }
+      // if (enabled) {
+      //   console.log('Authorization status:', authStatus);
+      // }
     } catch (error) {
       console.error('Error requesting permission:', error);
     }
@@ -96,9 +96,9 @@ const RootNavigator = () => {
 
   PushNotification.configure({
     // Called when the token is generated or registered
-    onRegister: function (token) {
-      console.log('Registered with token:', token.token);
-    },
+    // onRegister: function (token) {
+    //   console.log('Registered with token:', token.token);
+    // },
     // Called when a remote or local notification is opened or received
     onNotification: function (notification) {
       console.log('Received notification:', notification);
