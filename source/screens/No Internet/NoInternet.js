@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: '#fff',
   },
   animation: {
     width: width * 0.8, // Adjust the size of the animation as per your requirements
