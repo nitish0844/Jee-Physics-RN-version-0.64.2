@@ -49,14 +49,17 @@ const Version = () => {
           <View style={{marginLeft: 10, flex: 1}}>
             <Text style={styles.text}>App version</Text>
           </View>
-          <TouchableOpacity style={styles.next} onPress={toggleModal}>
+          {/* <TouchableOpacity style={styles.next} onPress={toggleModal}>
             <Entypo
               name="chevron-small-right"
               size={30}
               color="#000"
               style={styles.nextIcon}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <View style={styles.next}>
+            <Text style={styles.versionText}>{version}</Text>
+          </View>
         </View>
         {isModalVisible && <WrapperComponent />}
       </View>
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
     paddingRight: 20,
-    right: 20,
+    right: 30,
   },
   nextIcon: {
     alignSelf: 'flex-end',
@@ -111,5 +114,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  versionText: {
+    color: '#000',
+    fontSize: 15,
+    fontWeight: '600',
   },
 });

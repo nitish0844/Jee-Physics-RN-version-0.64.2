@@ -29,11 +29,11 @@ import PushNotification, {Importance} from 'react-native-push-notification';
 import Payment from './source/components/Payment/Payment.js';
 // import Loader from './source/components/Loader/Loader.js';
 import SplashScreen from './source/screens/SplashScreen/SplashScreen.js';
-import LiveStream from './source/components/LiveStream/LiveStream.js';
 
 import Loader from './source/screens/Loader/Loader.js';
 import SearchComponent from './source/components/SearchBar function/SearchPage.js';
 import ChatCrips from './source/components/Customer_Service/ChatCrisp.js';
+import PaymentHistoryData from './source/components/Payment/PaymentHistoryData.js';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -286,6 +286,11 @@ const RootNavigator = () => {
       <Stack.Screen
         name="ChatCrips"
         component={ChatCrips}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PaymentHistory"
+        component={PaymentHistoryData}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

@@ -72,10 +72,46 @@ const Payment = ({route, navigation}) => {
         console.log('Payment success:', razorpayResponse);
 
         const currentUser = auth().currentUser;
+
         if (currentUser) {
           const userPaidNotesRef = firestore()
             .collection('UserPaidNotes')
             .doc(currentUser.email);
+
+          // Increment the payment count and create/update the subdocument
+          if (currentUser) {
+            const userPaymentHistoryRef = firestore()
+              .collection('PaymentHistory')
+              .doc(currentUser.email)
+              .collection('Payment'); // Reference to the 'payment' subcollection
+
+            // Fetch the existing subdocuments to determine the next subdocument name
+            userPaymentHistoryRef
+              .get()
+              .then(querySnapshot => {
+                const paymentCount = querySnapshot.size;
+                const subDocName = `payment${paymentCount + 1}`;
+
+                userPaymentHistoryRef
+                  .doc(subDocName)
+                  .set({
+                    date: new Date().toISOString().slice(0, 10),
+                    time: new Date().toLocaleTimeString(),
+                    amount: amount,
+                    course: courseName,
+                    paymentId: razorpayResponse.razorpay_payment_id,
+                  })
+                  .then(() => {
+                    console.log('Payment details stored in Firestore');
+                  })
+                  .catch(error => {
+                    console.log('Error storing payment details:', error);
+                  });
+              })
+              .catch(error => {
+                console.log('Error fetching payment history:', error);
+              });
+          }
 
           // Check if the user's document exists in the 'UserPaidNotes' collection
           userPaidNotesRef

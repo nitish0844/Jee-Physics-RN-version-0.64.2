@@ -3,8 +3,10 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
 
 const PaymentHistory = () => {
+  const navigation = useNavigation();
   return (
     <View style={{marginTop: 20}}>
       <Text style={styles.Title}>BILLING SETTINGS</Text>
@@ -14,7 +16,9 @@ const PaymentHistory = () => {
           <View style={{marginLeft: 10, flex: 1}}>
             <Text style={styles.text}>Payment history</Text>
           </View>
-          <TouchableOpacity style={styles.next}>
+          <TouchableOpacity
+            style={styles.next}
+            onPress={() => navigation.navigate('PaymentHistory')}>
             <Entypo
               name="chevron-small-right"
               size={30}
