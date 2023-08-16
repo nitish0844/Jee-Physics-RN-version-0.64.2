@@ -1,8 +1,8 @@
 import {View, Text, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 
 import ProfileImage from '../../components/ProfileTab/ProfileImage';
 
@@ -15,6 +15,13 @@ import SignOut from '../../components/ProfileTab/ProfileSettings/SignOut/SignOut
 
 const ProfileMain = () => {
   const navigation = useNavigation();
+  const scrollViewRef = useRef(null);
+
+  useFocusEffect(() => {
+    // Scroll to the top of the ScrollView when the screen is loaded
+    scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
+  }, []);
+
   return (
     <SafeAreaView style={styles.Container}>
       <View style={{marginBottom: 10}}>
@@ -32,7 +39,7 @@ const ProfileMain = () => {
           </View>
         </View>
       </View>
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{flex: 1}} ref={scrollViewRef}>
         <ProfileImage />
         <ProfileSection1 />
         <PaymentHistory />

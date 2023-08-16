@@ -39,7 +39,7 @@ const AdvancedUnit = () => {
   // console.log(userData);
 
   const handleButtonPress = course => {
-    const amount = 100000; // Replace with the actual payment amount for this course
+    const amount = 150099; // Replace with the actual payment amount for this course
     const BackScreen = 'BottomTabs';
     const CollectionandDoc = 'Advance Units';
     const courseName = course;

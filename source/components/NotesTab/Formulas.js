@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React, {useRef} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 
 const data = [
   {
@@ -23,9 +24,16 @@ const data = [
 ];
 
 const Formulas = () => {
+  const scrollViewRef = useRef(null);
+
+  useFocusEffect(() => {
+    // Scroll to the top of the ScrollView when the screen is loaded
+    scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
+  }, []);
+
   return (
     <View style={{paddingBottom: '60%', top: 10}}>
-      <ScrollView>
+      <ScrollView ref={scrollViewRef}>
         <Text style={styles.title}>Physics formulas + combined</Text>
         {data.map((z, index) => {
           if (index % 2 === 0) {

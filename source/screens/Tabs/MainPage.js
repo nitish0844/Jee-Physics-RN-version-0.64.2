@@ -19,7 +19,7 @@ import {
   Toast,
 } from 'react-native-alert-notification';
 import SearchBar from 'react-native-dynamic-search-bar';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import {Pagination} from 'react-native-snap-carousel';
 
@@ -40,8 +40,14 @@ const MainPage = () => {
   let carouselRef = useRef(null);
   // const [Name, setName] = useState('');
   const [userData, setUserData] = useState('');
+  const scrollViewRef = useRef(null);
 
   const {width: screenWidth} = Dimensions.get('window');
+
+  useFocusEffect(() => {
+    // Scroll to the top of the ScrollView when the screen is loaded
+    scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
+  }, []);
 
   const data = [
     {
@@ -114,7 +120,7 @@ const MainPage = () => {
   return (
     <AlertNotificationRoot>
       <SafeAreaView style={styles.container}>
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{flex: 1}} ref={scrollViewRef}>
           <View style={styles.contentContainer}>
             <View style={styles.topContainer}>
               <View style={styles.headContainer}>
@@ -136,7 +142,7 @@ const MainPage = () => {
               />
             </View>
             <View>
-              <Carousel
+              {/* <Carousel
                 ref={carouselRef}
                 // layoutCardOffset={true}
                 // sliderWidth={screenWidth}
@@ -149,7 +155,7 @@ const MainPage = () => {
                 autoplay={true}
                 loop={true}
                 autoplayDelay={3000}
-              />
+              /> */}
             </View>
             <View id="Popular Notes">
               <PopularNotes />

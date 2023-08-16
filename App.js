@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  TransitionPresets,
+  TransitionSpecs,
+  HeaderStyleInterpolators,
+} from '@react-navigation/stack';
+
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons.js';
 import Feather from 'react-native-vector-icons/Feather.js';
@@ -286,16 +292,47 @@ const RootNavigator = () => {
       <Stack.Screen
         name="ChatCrips"
         component={ChatCrips}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS, // Apply custom animation
+        }}
       />
       <Stack.Screen
         name="PaymentHistory"
         component={PaymentHistoryData}
         options={{headerShown: false}}
       />
+      {/* <Stack.Screen
+        name="PurchaseMain"
+        component={PurchaseMain}
+        options={{headerShown: false}}
+      /> */}
     </Stack.Navigator>
     // </NavigationContainer>
   );
+};
+
+const customTransition = {
+  gestureDirection: 'horizontal',
+  transitionSpec: {
+    open: TransitionSpecs.TransitionIOSSpec,
+    close: TransitionSpecs.TransitionIOSSpec,
+  },
+  cardStyleInterpolator: ({current, layouts}) => {
+    return {
+      cardStyle: {
+        transform: [
+          {
+            translateX: current.progress.interpolate({
+              inputRange: [0, 1],
+              outputRange: [layouts.screen.width, 0],
+            }),
+          },
+        ],
+      },
+    };
+  },
+  headerStyleInterpolator: HeaderStyleInterpolators.forFade,
 };
 
 // const LiveStreamButton = ({focused, color, size, navigation}) => {

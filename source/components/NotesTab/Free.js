@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 
 const data = [
   {
@@ -44,9 +45,16 @@ const data = [
 ];
 
 const Free = () => {
+  const scrollViewRef = useRef(null);
+
+  useFocusEffect(() => {
+    // Scroll to the top of the ScrollView when the screen is loaded
+    scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
+  }, []);
+
   return (
     <View style={{paddingBottom: 220}}>
-      <ScrollView>
+      <ScrollView ref={scrollViewRef}>
         <View style={styles.PopularContainer}>
           {data?.map((z, index) =>
             index % 1 === 0 ? (

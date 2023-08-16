@@ -1,9 +1,16 @@
 import {View, Text, StyleSheet, ScrollView, RefreshControl} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import Free from '../NotesTab/Free';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 
 const Purchased = ({userData, handleRefresh, selectedTag, searchText}) => {
   const [refreshing, setRefreshing] = useState(false);
+  const scrollViewRef = useRef(null);
+
+  useFocusEffect(() => {
+    // Scroll to the top of the ScrollView when the screen is loaded
+    scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
+  }, []);
 
   const onRefresh = async () => {
     setRefreshing(true); // Start refreshing
@@ -42,6 +49,7 @@ const Purchased = ({userData, handleRefresh, selectedTag, searchText}) => {
     <View style={styles.container}>
       {selectedTag === 'FreeNotes' ? ( // Check if selectedTag is "Free"
         <ScrollView // Wrap the Free component with ScrollView
+          ref={scrollViewRef}
           contentContainerStyle={[styles.scrollViewContainer]}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -50,6 +58,7 @@ const Purchased = ({userData, handleRefresh, selectedTag, searchText}) => {
         </ScrollView>
       ) : (
         <ScrollView
+          ref={scrollViewRef}
           contentContainerStyle={styles.scrollViewContainer}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

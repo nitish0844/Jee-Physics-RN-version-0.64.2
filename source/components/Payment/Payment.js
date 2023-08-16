@@ -45,11 +45,11 @@ const Payment = ({route, navigation}) => {
       textBody: 'All the best',
       button: 'close',
       onPress: () => {
-        navigation.replace('PdfViewer');
+        navigation.navigate('PurchaseMain');
       },
 
       onHide: () => {
-        navigation.replace('PdfViewer');
+        navigation.navigate('PurchaseMain');
       },
     });
   };
@@ -236,7 +236,7 @@ const Payment = ({route, navigation}) => {
       email: 'user@example.com', // User's email
       contact: '1234567890', // User's phone number
     },
-    theme: {color: '#92ff33'}, // Theme color
+    theme: {color: '#17A1FA'}, // Theme color
   };
 
   return (

@@ -6,8 +6,9 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 
 const data = [
   {
@@ -53,6 +54,13 @@ const data = [
 ];
 
 const Notes = () => {
+  const scrollViewRef = useRef(null);
+
+  useFocusEffect(() => {
+    // Scroll to the top of the ScrollView when the screen is loaded
+    scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
+  }, []);
+
   return (
     // <View style={{bottom: 30}}>
     //   <Text style={styles.title}>Advance units</Text>
@@ -96,7 +104,7 @@ const Notes = () => {
     // </View>
 
     <View style={{bottom: 30, paddingBottom: '60%'}}>
-      <ScrollView>
+      <ScrollView ref={scrollViewRef}>
         {data.map((z, index) => {
           if (index % 2 === 0) {
             return (
@@ -113,13 +121,8 @@ const Notes = () => {
                   <Image source={{uri: z.Image1}} style={styles.image} />
                   <Text style={styles.CardTitle}>{z.Title}</Text>
                   <Text style={styles.CardDescription}>12 Chapters</Text>
-                  <TouchableOpacity>
-                    <AntDesign
-                      name="rightcircle"
-                      size={30}
-                      color={'#000'}
-                      style={styles.icon}
-                    />
+                  <TouchableOpacity style={styles.icon}>
+                    <AntDesign name="rightcircle" size={30} color={'#000'} />
                   </TouchableOpacity>
                 </View>
                 {data[index + 1] && (
@@ -132,13 +135,8 @@ const Notes = () => {
                       {data[index + 1].Title}
                     </Text>
                     <Text style={styles.CardDescription}>12 Chapters</Text>
-                    <TouchableOpacity>
-                      <AntDesign
-                        name="rightcircle"
-                        size={30}
-                        color={'#000'}
-                        style={styles.icon}
-                      />
+                    <TouchableOpacity style={styles.icon}>
+                      <AntDesign name="rightcircle" size={30} color={'#000'} />
                     </TouchableOpacity>
                   </View>
                 )}

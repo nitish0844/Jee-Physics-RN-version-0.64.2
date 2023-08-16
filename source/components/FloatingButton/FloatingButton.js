@@ -325,7 +325,7 @@ const FloatingButton = () => {
           <AntDesign
             name="customerservice"
             size={30}
-            color={'#000'}
+            color={'#fff'}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue', // Change this to your desired button color
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#17A1FA',
   },
   touchable: {
     flex: 1,

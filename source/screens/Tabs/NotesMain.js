@@ -21,6 +21,7 @@ import AdvancedUnit from '../../components/HomeTab/AdvancedUnit';
 import Notes from '../../components/NotesTab/Notes';
 import Formulas from '../../components/NotesTab/Formulas';
 import Free from '../../components/NotesTab/Free';
+import {useFocusEffect} from '@react-navigation/native';
 
 const NotesMain = ({navigation}) => {
   const route = useRoute();
