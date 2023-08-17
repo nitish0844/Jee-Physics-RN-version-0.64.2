@@ -22,11 +22,13 @@ import SearchBar from 'react-native-dynamic-search-bar';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import {Pagination} from 'react-native-snap-carousel';
+import messaging from '@react-native-firebase/messaging';
 
 import AdvancedUnit from '../../components/HomeTab/AdvancedUnit';
 import PopularNotes from '../../components/HomeTab/PopularNotes';
 import PhysicsFormula from '../../components/HomeTab/PhysicsFormula';
 import CombinedUnitandFormula from '../../components/HomeTab/CombinedUnitandFormula';
+import NotificationButton from '../../components/NotifyShower/NotificationButton';
 
 import auth from '@react-native-firebase/auth';
 
@@ -36,19 +38,18 @@ import firestore from '@react-native-firebase/firestore';
 
 LogBox.ignoreAllLogs();
 
-const MainPage = () => {
+const MainPage = ({hasNotification}) => {
   let carouselRef = useRef(null);
   // const [Name, setName] = useState('');
   const [userData, setUserData] = useState('');
   const scrollViewRef = useRef(null);
-  const [notificationCount, setNotificationCount] = useState(0);
 
   const {width: screenWidth} = Dimensions.get('window');
 
   useFocusEffect(() => {
     // Scroll to the top of the ScrollView when the screen is loaded
     scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
-  }, []);
+  });
 
   const data = [
     {
@@ -124,6 +125,7 @@ const MainPage = () => {
         <ScrollView style={{flex: 1}} ref={scrollViewRef}>
           <View style={styles.contentContainer}>
             <View style={styles.topContainer}>
+              <NotificationButton />
               <View style={styles.headContainer}>
                 <Text style={styles.Name}>
                   Hi, {userData && userData.name ? userData.name : ''} 😊
