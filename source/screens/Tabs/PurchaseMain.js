@@ -5,9 +5,9 @@ import {
   SafeAreaView,
   Keyboard,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import SearchBar from 'react-native-dynamic-search-bar';

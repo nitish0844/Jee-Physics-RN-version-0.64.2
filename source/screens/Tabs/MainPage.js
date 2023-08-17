@@ -41,6 +41,7 @@ const MainPage = () => {
   // const [Name, setName] = useState('');
   const [userData, setUserData] = useState('');
   const scrollViewRef = useRef(null);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const {width: screenWidth} = Dimensions.get('window');
 

@@ -49,13 +49,8 @@ const Formulas = () => {
                   <Image source={{uri: z?.Image1}} style={styles.image} />
                   <Text style={styles.CardTitle}>{z?.Title}</Text>
                   <Text style={styles.CardDescription}>all units formula</Text>
-                  <TouchableOpacity>
-                    <AntDesign
-                      name="rightcircle"
-                      size={30}
-                      color={'#000'}
-                      style={styles.icon}
-                    />
+                  <TouchableOpacity style={styles.icon}>
+                    <AntDesign name="rightcircle" size={30} color={'#000'} />
                   </TouchableOpacity>
                 </View>
                 {data[index + 1] && (
@@ -68,13 +63,8 @@ const Formulas = () => {
                       {data[index + 1].Title}
                     </Text>
                     <Text style={styles.CardDescription}>12 Chapters</Text>
-                    <TouchableOpacity>
-                      <AntDesign
-                        name="rightcircle"
-                        size={30}
-                        color={'#000'}
-                        style={styles.icon}
-                      />
+                    <TouchableOpacity style={styles.icon}>
+                      <AntDesign name="rightcircle" size={30} color={'#000'} />
                     </TouchableOpacity>
                   </View>
                 )}
@@ -92,13 +82,8 @@ const Formulas = () => {
                 <Text style={styles.text1}>12th all units + formulas</Text>
                 <Text style={styles.text2}>10 units + Formulas</Text>
                 <Text style={styles.text3}>Handwritten notes</Text>
-                <TouchableOpacity>
-                  <AntDesign
-                    name="rightcircle"
-                    size={30}
-                    color={'#000'}
-                    style={styles.icon1}
-                  />
+                <TouchableOpacity style={styles.icon1}>
+                  <AntDesign name="rightcircle" size={30} color={'#000'} />
                 </TouchableOpacity>
               </View>
             </View>

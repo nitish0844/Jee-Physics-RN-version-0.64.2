@@ -3,7 +3,7 @@ import {
   Text,
   SafeAreaView,
   StyleSheet,
-  // TouchableOpacity,
+  TouchableOpacity,
   Keyboard,
   ScrollView,
 } from 'react-native';
@@ -12,7 +12,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import SearchBar from 'react-native-dynamic-search-bar';
 import PopularNotes from '../../components/HomeTab/PopularNotes';
 import {useRoute} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import NotesView from '../../components/NotesTab/NotesView';
 import PhysicsFormula from '../../components/HomeTab/PhysicsFormula';
