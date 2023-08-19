@@ -41,7 +41,9 @@ import Loader from './source/screens/Loader/Loader.js';
 import SearchComponent from './source/components/SearchBar function/SearchPage.js';
 import ChatCrips from './source/components/Customer_Service/ChatCrisp.js';
 import PaymentHistoryData from './source/components/Payment/PaymentHistoryData.js';
-import NotificationButton from './source/components/NotifyShower/NotificationButton.js';
+// import NotificationButton from './source/components/NotifyShower/NotificationButton.js';
+
+import Screen from './source/components/NotificationReciever/NotificationReciever.js';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,31 +65,6 @@ const App = () => {
     //   return () => unsubscribe();
     // }, []);
 
-    useEffect(() => {
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
-        // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-        await AsyncStorage.setItem('newNotificationFlag', 'true');
-        setNewNotification(true);
-        const {title, body} = remoteMessage.notification;
-        PushNotification.localNotification({
-          title: title,
-          message: body,
-          channelId: '812019205023-9994365901', // Make sure this matches the channelId you defined in PushNotification.configure()
-          category: '812019205023-9994365901',
-          vibration: 500,
-          vibrate: true,
-          playSound: true,
-          soundName: 'notification.mp3',
-          // largeIconUrl:
-          //   'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
-          // bigLargeIconUrl:
-          //   'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
-        });
-      });
-
-      return unsubscribe;
-    }, []);
-
     const requestUserPermission = async () => {
       try {
         const authStatus = await messaging().requestPermission();
@@ -107,34 +84,85 @@ const App = () => {
       requestUserPermission();
     }, []);
 
-    PushNotification.configure({
-      // Called when the token is generated or registered
-      // onRegister: function (token) {
-      //   console.log('Registered with token:', token.token);
-      // },
-      // Called when a remote or local notification is opened or received
-      onNotification: function (notification) {
-        console.log('Received notification:', notification);
-        // You can handle the received notification here
-      },
+    useEffect(() => {
+      const handleNotification = messaging().onMessage(async remoteMessage => {
+        const {title, body, imageUrl} = remoteMessage.notification;
 
-      // Android-specific configuration
-      android: {
-        channelId: '812019205023-9994365901', // Replace with your desired channel ID
-        channelName: 'com.sampleapp.app', // Replace with your desired channel name
-        // importance: 4, // Set the importance level (1: Default, 4: High)
-        vibrate: true, // Enable vimport { firestore } from '@react-native-firebase/firestore';
-        vibration: 500,
-        playSound: true,
-        soundName: 'notification.mp3',
-        importance: Importance.HIGH,
-      },
-      // iOS-specific configuration
-      ios: {
-        // iOS configuration options here
-      },
-      // Other configuration options...
-    });
+        PushNotification.localNotification({
+          title: title,
+          message: body,
+          channelId: '812019205023-9994365901',
+          vibration: 500,
+          vibrate: true,
+          playSound: true,
+          soundName: 'notification.mp3',
+          color: 'red',
+          actions: ['Open', 'Delete'],
+          userInfo: {key: 'value'},
+          largeIconUrl:
+            'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
+        });
+
+        messaging().setBackgroundMessageHandler(async remoteMessage => {
+          const {title, body, data} = remoteMessage.notification;
+
+          const notificationPayload = {
+            channelId: '812019205023-9994365901', // Make sure this matches the channelId you defined in PushNotification.configure()
+            category: '812019205023-9994365901',
+            title: title,
+            message: body,
+            sound: 'notification.mp3', // Specify the custom notification sound file
+            userInfo: data, // Pass additional data to the notification
+            playSound: true,
+            importance: Importance.HIGH,
+            actions: ['Open', 'Delete'],
+            vibration: 500,
+            vibrate: true,
+            color: 'red',
+          };
+
+          PushNotification.localNotification(notificationPayload);
+
+          if (data && data.action === 'yourActionKey') {
+            // Perform the desired action when the app is killed or in the background
+            // For example, navigate to a specific screen or perform a specific task
+            // You can use navigation.navigate or other logic here
+          }
+        });
+      });
+
+      const configurePushNotification = async () => {
+        await messaging().registerDeviceForRemoteMessages();
+
+        messaging().onMessage(handleNotification);
+
+        PushNotification.createChannel({
+          channelId: '812019205023-9994365901',
+          actions: ['Open', 'Delete'],
+        });
+
+        PushNotification.configure({
+          onNotification: handleNotification, // Handle notification when the app is in the foreground
+          // Android-specific configuration
+          android: {
+            channelId: '812019205023-9994365901',
+            channelName: 'com.sampleapp.app',
+            vibration: 500,
+            playSound: true,
+            soundName: 'notification.mp3', // Set your custom sound file
+            importance: Importance.HIGH,
+            actions: ['Open', 'Delete'],
+          },
+          // iOS-specific configuration
+          ios: {
+            // iOS configuration options here
+          },
+          // Other configuration options...
+        });
+      };
+
+      configurePushNotification();
+    }, []);
 
     const MainStack = () => {
       return (
@@ -309,11 +337,6 @@ const App = () => {
           component={PaymentHistoryData}
           options={{headerShown: false}}
         />
-        {/* <Stack.Screen
-        name="PurchaseMain"
-        component={PurchaseMain}
-        options={{headerShown: false}}
-      /> */}
       </Stack.Navigator>
       // </NavigationContainer>
     );
@@ -381,7 +404,7 @@ const App = () => {
             <NoInternet />
           </>
         ) : (
-          <RootNavigator notification={newNotification} />
+          <RootNavigator />
         )}
       </NavigationContainer>
       {/* <NotificationButton openedNotification={openedNotification} /> */}

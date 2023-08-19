@@ -30,6 +30,10 @@ import live.videosdk.rnwebrtc.WebRTCModulePackage;
 
 
 
+
+
+
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -50,6 +54,8 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new ForegroundServicePackage());
           packages.add(new InCallManagerPackage());
           packages.add(new WebRTCModulePackage());
+
+          
           return packages;
         }
 
@@ -79,7 +85,10 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     createNotificationChannel();
     SoLoader.init(this, /* native exopackage */ false);
+    
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+
   }
 
 

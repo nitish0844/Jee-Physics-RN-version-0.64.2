@@ -28,7 +28,7 @@ import AdvancedUnit from '../../components/HomeTab/AdvancedUnit';
 import PopularNotes from '../../components/HomeTab/PopularNotes';
 import PhysicsFormula from '../../components/HomeTab/PhysicsFormula';
 import CombinedUnitandFormula from '../../components/HomeTab/CombinedUnitandFormula';
-import NotificationButton from '../../components/NotifyShower/NotificationButton';
+// import NotificationButton from '../../components/NotifyShower/NotificationButton';
 
 import auth from '@react-native-firebase/auth';
 
@@ -125,7 +125,7 @@ const MainPage = ({hasNotification}) => {
         <ScrollView style={{flex: 1}} ref={scrollViewRef}>
           <View style={styles.contentContainer}>
             <View style={styles.topContainer}>
-              <NotificationButton />
+              {/* <NotificationButton /> */}
               <View style={styles.headContainer}>
                 <Text style={styles.Name}>
                   Hi, {userData && userData.name ? userData.name : ''} 😊
@@ -137,7 +137,7 @@ const MainPage = ({hasNotification}) => {
               <SearchBar
                 style={styles.SearchBar}
                 placeholder="Search here"
-                onPress={() => Navigation.navigate('SearchPage')}
+                onPress={() => Navigation.navigate('Screen')}
                 onChangeText={text => console.log(text)}
                 editable={false}
                 clearIconComponent
