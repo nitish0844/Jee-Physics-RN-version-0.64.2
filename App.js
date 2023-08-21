@@ -99,12 +99,12 @@ const App = () => {
           color: 'red',
           actions: ['Open', 'Delete'],
           userInfo: {key: 'value'},
-          largeIconUrl:
-            'https://w7.pngwing.com/pngs/537/580/png-transparent-bell-notification-communication-information-icon.png',
+          largeIconUrl: imageUrl,
+          bigPictureUrl: imageUrl,
         });
 
         messaging().setBackgroundMessageHandler(async remoteMessage => {
-          const {title, body, data} = remoteMessage.notification;
+          const {title, body, data, imageUrl} = remoteMessage.notification;
 
           const notificationPayload = {
             channelId: '812019205023-9994365901', // Make sure this matches the channelId you defined in PushNotification.configure()
@@ -119,6 +119,8 @@ const App = () => {
             vibration: 500,
             vibrate: true,
             color: 'red',
+            largeIconUrl: imageUrl,
+            bigPictureUrl: imageUrl,
           };
 
           PushNotification.localNotification(notificationPayload);
@@ -139,25 +141,6 @@ const App = () => {
         PushNotification.createChannel({
           channelId: '812019205023-9994365901',
           actions: ['Open', 'Delete'],
-        });
-
-        PushNotification.configure({
-          onNotification: handleNotification, // Handle notification when the app is in the foreground
-          // Android-specific configuration
-          android: {
-            channelId: '812019205023-9994365901',
-            channelName: 'com.sampleapp.app',
-            vibration: 500,
-            playSound: true,
-            soundName: 'notification.mp3', // Set your custom sound file
-            importance: Importance.HIGH,
-            actions: ['Open', 'Delete'],
-          },
-          // iOS-specific configuration
-          ios: {
-            // iOS configuration options here
-          },
-          // Other configuration options...
         });
       };
 

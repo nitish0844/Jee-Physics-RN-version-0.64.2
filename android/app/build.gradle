@@ -3,6 +3,7 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply plugin: 'com.google.gms.google-services'
 
 
+
 import com.android.build.OutputFile
 
 /**
@@ -211,10 +212,8 @@ dependencies {
     implementation project(':rnfgservice')
     implementation project(':rnwebrtc')
     implementation project(':rnincallmanager')
+    implementation project(':react-native-push-notification')
     
-
-
-
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
