@@ -59,7 +59,7 @@ const Notes = () => {
   useFocusEffect(() => {
     // Scroll to the top of the ScrollView when the screen is loaded
     scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
-  }, []);
+  });
 
   return (
     // <View style={{bottom: 30}}>

@@ -49,8 +49,6 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const App = () => {
-  const [newNotification, setNewNotification] = useState(false);
-
   const RootNavigator = () => {
     // const navigation = useNavigation(); // Add this line to get the navigation object
 
@@ -64,6 +62,24 @@ const App = () => {
     //   const unsubscribe = dynamicLinks().onLink(handleDynamicLinks);
     //   return () => unsubscribe();
     // }, []);
+
+    // PushNotification.createChannel({
+    //   channelId: '812019205023-9994365901',
+    //   actions: ['Open', 'Delete'],
+    // });
+
+    // const deleteChannel = channelId => {
+    //   PushNotification.deleteChannel(channelId, deleted => {
+    //     if (deleted) {
+    //       console.log(`Channel with ID ${channelId} deleted successfully`);
+    //     } else {
+    //       console.log(`Failed to delete channel with ID ${channelId}`);
+    //     }
+    //   });
+    // };
+
+    // const channelIdToDelete = '812019205023-9994365901'; // Replace with your channel ID
+    // deleteChannel(channelIdToDelete);
 
     const requestUserPermission = async () => {
       try {
@@ -86,7 +102,7 @@ const App = () => {
 
     useEffect(() => {
       const handleNotification = messaging().onMessage(async remoteMessage => {
-        const {title, body, imageUrl} = remoteMessage.notification;
+        const {title, body, imageUrl} = remoteMessage.data;
 
         PushNotification.localNotification({
           title: title,
@@ -99,12 +115,14 @@ const App = () => {
           color: 'red',
           actions: ['Open', 'Delete'],
           userInfo: {key: 'value'},
-          largeIconUrl: imageUrl,
+          // bigPictureUrl: 'https://wallpaperaccess.com/full/393752.jpg',
           bigPictureUrl: imageUrl,
+          importance: Importance.LOW,
+          largeIconUrl: imageUrl,
         });
 
         messaging().setBackgroundMessageHandler(async remoteMessage => {
-          const {title, body, data, imageUrl} = remoteMessage.notification;
+          const {title, body, data, imageUrl} = remoteMessage.data;
 
           const notificationPayload = {
             channelId: '812019205023-9994365901', // Make sure this matches the channelId you defined in PushNotification.configure()
@@ -114,13 +132,14 @@ const App = () => {
             sound: 'notification.mp3', // Specify the custom notification sound file
             userInfo: data, // Pass additional data to the notification
             playSound: true,
-            importance: Importance.HIGH,
+            // importance: Importance.HIGH,
+            importance: Importance.LOW,
             actions: ['Open', 'Delete'],
+            bigPictureUrl: imageUrl,
+            largeIconUrl: imageUrl,
             vibration: 500,
             vibrate: true,
             color: 'red',
-            largeIconUrl: imageUrl,
-            bigPictureUrl: imageUrl,
           };
 
           PushNotification.localNotification(notificationPayload);
@@ -138,10 +157,19 @@ const App = () => {
 
         messaging().onMessage(handleNotification);
 
-        PushNotification.createChannel({
-          channelId: '812019205023-9994365901',
-          actions: ['Open', 'Delete'],
-        });
+        PushNotification.createChannel(
+          {
+            channelId: '812019205023-9994365901',
+            channelName: 'com.sampleapp.app',
+            soundName: 'notification.mp3',
+            vibration: 500,
+            vibrate: true,
+            playSound: true,
+            actions: ['Open', 'Delete'],
+            importance: Importance.LOW,
+          },
+          created => console.log(`createChannel 3 returned '${created}'`),
+        );
       };
 
       configurePushNotification();

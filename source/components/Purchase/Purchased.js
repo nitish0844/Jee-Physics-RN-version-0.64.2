@@ -10,7 +10,7 @@ const Purchased = ({userData, handleRefresh, selectedTag, searchText}) => {
   useFocusEffect(() => {
     // Scroll to the top of the ScrollView when the screen is loaded
     scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
-  }, []);
+  });
 
   const onRefresh = async () => {
     setRefreshing(true); // Start refreshing
