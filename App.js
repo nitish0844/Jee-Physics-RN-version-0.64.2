@@ -41,6 +41,7 @@ import Loader from './source/screens/Loader/Loader.js';
 import SearchComponent from './source/components/SearchBar function/SearchPage.js';
 import ChatCrips from './source/components/Customer_Service/ChatCrisp.js';
 import PaymentHistoryData from './source/components/Payment/PaymentHistoryData.js';
+import NameFillNotes from './source/components/NotesTab/Notes/NameFillNotes.js';
 // import NotificationButton from './source/components/NotifyShower/NotificationButton.js';
 
 import Screen from './source/components/NotificationReciever/NotificationReciever.js';
@@ -346,6 +347,11 @@ const App = () => {
         <Stack.Screen
           name="PaymentHistory"
           component={PaymentHistoryData}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="NameFillNotes"
+          component={NameFillNotes}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

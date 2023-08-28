@@ -19,90 +19,54 @@ const data = [
   {
     Image1:
       'https://free4kwallpapers.com/uploads/originals/2015/07/23/tron-lamborghini.jpg',
-    Title: 'Kinetics',
+    Title: 'Dynamics',
   },
   {
     Image1:
       'https://free4kwallpapers.com/uploads/originals/2015/07/23/tron-lamborghini.jpg',
-    Title: 'Kinetics',
+    Title: 'law of force',
   },
   {
     Image1:
       'https://free4kwallpapers.com/uploads/originals/2015/07/23/tron-lamborghini.jpg',
-    Title: 'Thermodynamics',
+    Title: 'Gravity',
   },
   {
     Image1:
       'https://free4kwallpapers.com/uploads/originals/2015/07/23/tron-lamborghini.jpg',
-    Title: 'Kinetics',
+    Title: 'Law of motion',
   },
   {
     Image1:
       'https://free4kwallpapers.com/uploads/originals/2015/07/23/tron-lamborghini.jpg',
-    Title: 'Kinetics',
+    Title: 'Fluids',
   },
   {
     Image1:
       'https://free4kwallpapers.com/uploads/originals/2015/07/23/tron-lamborghini.jpg',
-    Title: 'Kinetics',
+    Title: 'Atoms',
   },
   {
     Image1:
       'https://free4kwallpapers.com/uploads/originals/2015/07/23/tron-lamborghini.jpg',
-    Title: 'Kinetics',
+    Title: 'Force',
   },
 ];
 
-const Notes = () => {
+const Notes = ({}) => {
   const scrollViewRef = useRef(null);
+  const Navigation = useNavigation();
 
   useFocusEffect(() => {
     // Scroll to the top of the ScrollView when the screen is loaded
     scrollViewRef.current.scrollTo({x: 0, y: 0, animated: false});
   });
 
-  return (
-    // <View style={{bottom: 30}}>
-    //   <Text style={styles.title}>Advance units</Text>
-    //   <TouchableOpacity>
-    //     <Text style={styles.ViewAll}>View all</Text>
-    //   </TouchableOpacity>
-    //   <View
-    //     style={{
-    //       paddingBottom: 40,
-    //       flexDirection: 'row',
-    //       gap: 30,
-    //       alignSelf: 'center',
-    //     }}>
-    //     <View style={styles.card1}>
-    //       <Image source={{uri: uri}} style={styles.image} />
-    //       <Text style={styles.CardTitle}>Kinetics</Text>
-    //       <Text style={styles.CardDescription}>12 Chapters</Text>
-    //       <TouchableOpacity>
-    //         <AntDesign
-    //           name="rightcircle"
-    //           size={30}
-    //           color={'#000'}
-    //           style={styles.icon}
-    //         />
-    //       </TouchableOpacity>
-    //     </View>
-    //     <View style={styles.card1}>
-    //       <Image source={{uri: uri}} style={styles.image} />
-    //       <Text style={styles.CardTitle}>Laws of motion</Text>
-    //       <Text style={styles.CardDescription}>12 Chapters</Text>
-    //       <TouchableOpacity>
-    //         <AntDesign
-    //           name="rightcircle"
-    //           size={30}
-    //           color={'#000'}
-    //           style={styles.icon}
-    //         />
-    //       </TouchableOpacity>
-    //     </View>
-    //   </View>
-    // </View>
+  const handleButton = courseName => {
+    Navigation.navigate('NameFillNotes', {courseName});
+  };
 
+  return (
     <View style={{bottom: 30, paddingBottom: '60%'}}>
       <ScrollView ref={scrollViewRef}>
         {data.map((z, index) => {
@@ -121,7 +85,9 @@ const Notes = () => {
                   <Image source={{uri: z.Image1}} style={styles.image} />
                   <Text style={styles.CardTitle}>{z.Title}</Text>
                   <Text style={styles.CardDescription}>12 Chapters</Text>
-                  <TouchableOpacity style={styles.icon}>
+                  <TouchableOpacity
+                    style={styles.icon}
+                    onPress={() => handleButton(z.Title)}>
                     <AntDesign name="rightcircle" size={30} color={'#000'} />
                   </TouchableOpacity>
                 </View>

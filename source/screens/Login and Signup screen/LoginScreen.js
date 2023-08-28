@@ -23,6 +23,7 @@ import {useNavigation} from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const {width, height} = Dimensions.get('window');
 const responsiveWidth = width * 0.85; // 85% of the screen width
@@ -231,10 +232,10 @@ const Login = () => {
 
             <View style={{marginTop: '20%'}}>
               <View style={styles.inputContainer}>
-                <Image
-                  source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/email.png?alt=media&token=001c9b60-d5a2-4317-a113-32de56a5b5d5',
-                  }}
+                <MaterialCommunityIcons
+                  color={'#000'}
+                  name="email-outline"
+                  size={24}
                   style={styles.icon}
                 />
                 <TextInput
@@ -249,11 +250,11 @@ const Login = () => {
               </View>
 
               <View style={[styles.inputContainer, {marginTop: 15}]}>
-                <Image
-                  source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/password%20(1).png?alt=media&token=96105cab-e1eb-4979-a08f-672fa95280e2',
-                  }}
+                <MaterialCommunityIcons
+                  name="form-textbox-password"
+                  color={'#000'}
                   style={styles.icon}
+                  size={23}
                 />
                 <TextInput
                   style={styles.input}

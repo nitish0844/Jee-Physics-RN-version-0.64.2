@@ -74,22 +74,22 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
   });
 });
 
-const HeadlessCheck = ({isHeadless}) => {
-  if (isHeadless) {
-    return null;
-  }
+// const HeadlessCheck = ({isHeadless}) => {
+//   if (isHeadless) {
+//     return null;
+//   }
 
-  return <Main />;
-};
+//   return <Main />;
+// };
 
-const Main = () => {
-  return (
-    <>
-      {/* <PersistGate loading={null} persistor={persistor}> */}
-      <App />
-      {/* </PersistGate> */}
-    </>
-  );
-};
+// const Main = () => {
+//   return (
+//     <>
+//       {/* <PersistGate loading={null} persistor={persistor}> */}
+//       <App />
+//       {/* </PersistGate> */}
+//     </>
+//   );
+// };
 
-AppRegistry.registerComponent(appName, () => HeadlessCheck);
+AppRegistry.registerComponent(appName, () => App);

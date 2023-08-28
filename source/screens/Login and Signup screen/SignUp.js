@@ -19,7 +19,9 @@ import NetInfo from '@react-native-community/netinfo';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Feather from 'react-native-vector-icons/Feather';
 
 // import {
 //   GoogleSignin,
@@ -308,11 +310,11 @@ const Signup = () => {
           </View>
           <View style={{marginTop: '20%'}}>
             <View style={[styles.inputContainer]}>
-              <Image
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/phone.png?alt=media&token=69a34436-e6c3-4f5b-b398-1cd43ccd13a8',
-                }}
+              <Feather
+                name="user"
+                color={'#000'}
                 style={styles.icon}
+                size={23}
               />
               <TextInput
                 style={styles.input}
@@ -322,11 +324,11 @@ const Signup = () => {
               />
             </View>
             <View style={[styles.inputContainer, {marginTop: 15}]}>
-              <Image
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/email.png?alt=media&token=001c9b60-d5a2-4317-a113-32de56a5b5d5',
-                }}
+              <MaterialCommunityIcons
+                name="email-outline"
+                color={'#000'}
                 style={styles.icon}
+                size={23}
               />
               <TextInput
                 autoCapitalize="none"
@@ -340,11 +342,11 @@ const Signup = () => {
             </View>
 
             <View style={[styles.inputContainer, {marginTop: 15}]}>
-              <Image
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/platform2learn-54f87.appspot.com/o/password%20(1).png?alt=media&token=96105cab-e1eb-4979-a08f-672fa95280e2',
-                }}
+              <MaterialCommunityIcons
+                name="form-textbox-password"
+                color={'#000'}
                 style={styles.icon}
+                size={23}
               />
               <TextInput
                 style={styles.input}
