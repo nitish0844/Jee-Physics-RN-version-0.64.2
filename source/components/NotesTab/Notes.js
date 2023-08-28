@@ -71,6 +71,11 @@ const Notes = ({}) => {
       <ScrollView ref={scrollViewRef}>
         {data.map((z, index) => {
           if (index % 2 === 0) {
+            const rightIndex = index + 1;
+            if (rightIndex >= data.length) {
+              return null;
+            }
+
             return (
               <View
                 key={index}
@@ -85,27 +90,32 @@ const Notes = ({}) => {
                   <Image source={{uri: z.Image1}} style={styles.image} />
                   <Text style={styles.CardTitle}>{z.Title}</Text>
                   <Text style={styles.CardDescription}>12 Chapters</Text>
-                  <TouchableOpacity
-                    style={styles.icon}
-                    onPress={() => handleButton(z.Title)}>
-                    <AntDesign name="rightcircle" size={30} color={'#000'} />
+                  <TouchableOpacity onPress={() => handleButton(z.Title)}>
+                    <AntDesign
+                      name="rightcircle"
+                      size={30}
+                      color={'#000'}
+                      style={styles.icon}
+                    />
                   </TouchableOpacity>
                 </View>
-                {data[index + 1] && (
-                  <View style={styles.card1}>
-                    <Image
-                      source={{uri: data[index + 1].Image1}}
-                      style={styles.image}
+                <View style={styles.card1}>
+                  <Image
+                    source={{uri: data[rightIndex].Image1}}
+                    style={styles.image}
+                  />
+                  <Text style={styles.CardTitle}>{data[rightIndex].Title}</Text>
+                  <Text style={styles.CardDescription}>12 Chapters</Text>
+                  <TouchableOpacity
+                    onPress={() => handleButton(data[rightIndex].Title)}>
+                    <AntDesign
+                      name="rightcircle"
+                      size={30}
+                      color={'#000'}
+                      style={styles.icon}
                     />
-                    <Text style={styles.CardTitle}>
-                      {data[index + 1].Title}
-                    </Text>
-                    <Text style={styles.CardDescription}>12 Chapters</Text>
-                    <TouchableOpacity style={styles.icon}>
-                      <AntDesign name="rightcircle" size={30} color={'#000'} />
-                    </TouchableOpacity>
-                  </View>
-                )}
+                  </TouchableOpacity>
+                </View>
               </View>
             );
           }
